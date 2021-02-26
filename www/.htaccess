@@ -13,6 +13,8 @@ Require all granted
 
 	# use HTTPS
 	RewriteCond %{HTTPS} !=on
+	RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
 	RewriteCond %{HTTP:X-Forwarded-Proto} !https
 	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
