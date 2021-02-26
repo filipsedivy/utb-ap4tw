@@ -12,10 +12,9 @@ Require all granted
 	# RewriteBase /
 
 	# use HTTPS
-    RewriteCond %{HTTP:X-Forwarded-Proto} = http [OR]
-    RewriteCond %{HTTP:X-Forwarded-Proto} = ""
-    RewriteCond %{HTTPS} !=on
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+	RewriteCond %{HTTPS} !=on
+	RewriteCond %{HTTP:X-Forwarded-Proto} !https
+	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 	# prevents files starting with dot to be viewed by browser
 	RewriteRule /\.|^\.(?!well-known/) - [F]
