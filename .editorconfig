@@ -1,0 +1,4 @@
+root = true
+
+[*.neon]
+indent_style = tab

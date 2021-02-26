@@ -39,34 +39,24 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/i,
-                use: [
-                    //'style-loader',
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: ''
+                test: /\.(scss)$/,
+                use: [{
+                    loader: 'style-loader', // inject CSS to page
+                }, {
+                    loader: 'css-loader', // translates CSS into CommonJS modules
+                }, {
+                    loader: 'postcss-loader', // Run post css actions
+                    options: {
+                        plugins: function () { // post css plugins, can be exported to postcss.config.js
+                            return [
+                                //require('precss'),
+                                require('autoprefixer')
+                            ];
                         }
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    require('autoprefixer')({
-                                        overrideBrowserslist: ['last 3 versions', 'ie >9']
-                                    })
-                                ]
-                            }
-                        }
-                    }, 'sass-loader'
-                ]
+                    }
+                }, {
+                    loader: 'sass-loader' // compiles Sass to CSS
+                }]
             },
             {
                 test: /\.(js)$/,

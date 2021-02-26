@@ -1,21 +1,47 @@
+includes:
+	- services.neon
+
 parameters:
 
 
 application:
+	debugger: %debugMode%
 	errorPresenter: Error
 	mapping:
 		*: App\*Module\Presenters\*Presenter
 
 
 session:
+	debugger: %debugMode%
 	expiration: 14 days
 
 
+security:
+	debugger: %debugMode%
+
+
 di:
+	debugger: %debugMode%
 	export:
 		parameters: no
 		tags: no
 
+routing:
+	debugger: %debugMode%
+
 
 services:
 	- App\Router\RouterFactory::createRouter
+
+
+extensions:
+	webpack: Contributte\Webpack\DI\WebpackExtension(%debugMode%, %consoleMode%)
+
+
+webpack:
+    build:
+        directory: %wwwDir%/assets
+        publicPath: assets/
+
+    manifest:
+    	name: manifest.json
