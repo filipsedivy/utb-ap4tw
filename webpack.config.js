@@ -1,65 +1,32 @@
-const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const {WebpackManifestPlugin} = require("webpack-manifest-plugin");
 
 module.exports = {
     entry: {
-        application: './bundle/index.js'
+        application: "./bundle/index.js"
     },
-    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
+    mode: (process.env.NODE_ENV === "production") ? "production" : "development",
     module: {
         rules: [
             {
-                test: /\.css$/i,
+                test: /\.(css)$/i,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: ''
-                        }
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    }, {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    require('autoprefixer')({
-                                        overrideBrowserslist: ['last 3 versions', 'ie >9']
-                                    })
-                                ]
-                            }
-                        }
-                    }
+                    "style-loader",
+                    "css-loader"
+                ],
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader"
                 ]
             },
             {
-                test: /\.(scss)$/,
-                use: [{
-                    loader: 'style-loader', // inject CSS to page
-                }, {
-                    loader: 'css-loader', // translates CSS into CommonJS modules
-                }, {
-                    loader: 'postcss-loader', // Run post css actions
-                    options: {
-                        plugins: function () { // post css plugins, can be exported to postcss.config.js
-                            return [
-                                //require('precss'),
-                                require('autoprefixer')
-                            ];
-                        }
-                    }
-                }, {
-                    loader: 'sass-loader' // compiles Sass to CSS
-                }]
-            },
-            {
-                test: /\.(js)$/,
+                test: /\.(js)$/i,
                 use: {
                     loader: "babel-loader"
                 },
@@ -67,15 +34,28 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif|svg)$/i,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        limit: 8192,
-                        name: '[name].[hash:7].[ext]'
-                    }
-                },
+                use: [
                     {
-                        loader: 'image-webpack-loader'
+                        loader: "url-loader",
+                        options: {
+                            limit: 8192,
+                            name: "[name].[hash:7].[ext]"
+                        }
+                    },
+                    {
+                        loader: "image-webpack-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/i,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            name: "[name].[ext]",
+                            outputPath: "/fonts/"
+                        }
                     }
                 ]
             },
@@ -83,30 +63,34 @@ module.exports = {
     },
     plugins: [
         new WebpackManifestPlugin({
-            fileName: 'manifest.json'
+            fileName: "manifest.json"
         }),
         new MiniCssExtractPlugin({
             filename: "[name]-[contenthash].css"
         }),
         new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            'window.Nette': 'nette-forms',
-            Popper: ['popper.js', 'default']
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery",
+            Popper: ["popper.js", "default"]
         })
     ],
     resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: [".js", ".jsx"],
     },
     output: {
-        filename: '[name]-[fullhash].js',
-        chunkFilename: '[id]-[chunkhash].js',
-        path: path.join(__dirname, 'www', 'assets'),
+        filename: "[name]-[fullhash].js",
+        chunkFilename: "[id]-[chunkhash].js",
+        path: path.join(__dirname, "www", "assets"),
         publicPath: ""
     },
     devServer: {
-        contentBase: path.join(__dirname, 'www', 'assets'),
-        port: 3180
+        contentBase: path.join(__dirname, "www", "assets"),
+        port: 3180,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        }
     },
 };

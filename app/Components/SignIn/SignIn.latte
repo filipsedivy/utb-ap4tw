@@ -1,13 +1,30 @@
-<div class="sign-in">
-    <div class="wrapper">
-        <form action="admin_login.php" method="post" name="Login_Form" class="form">
-            <h3 class="form-heading">Vítejte v CRM</h3>
-            <hr class="color-lines"><br>
-
-            <input type="text" class="form-control" name="Username" placeholder="Username" required="" autofocus="" />
-            <input type="password" class="form-control" name="Password" placeholder="Password" required=""/>
-
-            <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Login</button>
-        </form>
+<form n:name="form">
+    <ul class="text-danger" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-user"></i></span>
+        </div>
+        {input username, class => 'form-control'}
     </div>
-</div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-key"></i></span>
+        </div>
+        {input password, class => 'form-control'}
+    </div>
+
+    <div class="row">
+        <div class="col pr-2">
+            {input process, class => 'btn btn-block btn-primary'}
+        </div>
+
+        <div class="col pl-2">
+            <a class="btn btn-block btn-link" href="{plink Sign:forgotPassword}">
+                Zapomenuté heslo
+            </a>
+        </div>
+    </div>
+</form>

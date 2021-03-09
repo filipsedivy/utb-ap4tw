@@ -1,5 +1,13 @@
-{block content}
+{layout '../@auth.latte'}
 
-<div class="container">
-    {control signIn}
+{block content}
+<div class="row h-100 justify-content-center align-items-center">
+    <div class="col-md-4">
+        <h1 class="text-center mb-2">CRM Systém</h1>
+        <div class="card">
+            <div class="card-body">
+                {control signIn}
+            </div>
+        </div>
+    </div>
 </div>

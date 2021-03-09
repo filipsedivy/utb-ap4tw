@@ -1,0 +1,31 @@
+<ul class="list-unstyled">
+    <li n:class="$presenter->isLinkCurrent('Homepage:default') ? 'active'">
+        <a href="{plink "Homepage:"}">
+            <i class="fa fa-fw fa-tachometer-alt"></i> Nástěnka
+        </a>
+    </li>
+
+    <li n:class="$presenter->isLinkCurrent('Customer:*') ? 'active'">
+        <a href="{plink "Customer:"}">
+            <i class="fas fa-fw fa-user"></i> Zákazníci
+        </a>
+    </li>
+
+    <li n:class="$presenter->isLinkCurrent('Task:*') ? 'active'">
+        <a href="{plink "Task:"}">
+            <i class="fas fa-fw fa-tasks"></i> Úkoly
+        </a>
+    </li>
+
+    <li n:class="$presenter->isLinkCurrent('Note:*') ? 'active'">
+        <a href="{plink "Note:"}">
+            <i class="fas fa-fw fa-sticky-note"></i> Poznámky
+        </a>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fas fa-fw fa-folder-open"></i> Soubory
+        </a>
+    </li>
+</ul>

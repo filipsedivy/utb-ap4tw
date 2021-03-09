@@ -7,11 +7,9 @@ use ReflectionClass;
 
 abstract class CoreControl extends Nette\Application\UI\Control
 {
-    /** @var bool */
-    private $isLoaded = false;
+    private bool $isLoaded = false;
 
-    /** @var string|null */
-    private $extendClassName;
+    private ?string $extendClassName;
 
     /**
      * @param array<mixed> $params

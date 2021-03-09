@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>{ifset $pageInfo->title}{$pageInfo->title|stripHtml} | {/ifset}CRM Systém</title>
+</head>
+
+<body class="bg-light">
+
+<div class="container h-100">
+    <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+
+    {include content}
+</div>
+
+<script src="{webpack application.js}"></script>
+</body>
+</html>

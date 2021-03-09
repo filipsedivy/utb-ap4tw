@@ -1,2 +1,5 @@
 services:
+	- App\Services\User\Authenticator
 	- App\Components\SignIn\SignInFactory
+	- App\Components\Menu\MenuFactory
+	- App\Components\ForgotPassword\ForgotPasswordFactory

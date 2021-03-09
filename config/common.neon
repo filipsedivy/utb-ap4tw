@@ -37,6 +37,23 @@ services:
 extensions:
 	webpack: Contributte\Webpack\DI\WebpackExtension(%debugMode%, %consoleMode%)
 
+	console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+	console.extra: Contributte\Console\Extra\DI\ConsoleBridgesExtension
+
+	events: Contributte\EventDispatcher\DI\EventDispatcherExtension
+
+	# Database
+	annotations: Nettrine\Annotations\DI\AnnotationsExtension
+	dbal: Nettrine\DBAL\DI\DbalExtension
+	dbal.console: Nettrine\DBAL\DI\DbalConsoleExtension
+	orm: Nettrine\ORM\DI\OrmExtension
+	orm.console: Nettrine\ORM\DI\OrmConsoleExtension
+	orm.cache: Nettrine\ORM\DI\OrmCacheExtension
+	orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
+	nettrine.migrations: Nettrine\Migrations\DI\MigrationsExtension
+	nettrine.fixtures: Nettrine\Fixtures\DI\FixturesExtension
+	nettrine.cache: Nettrine\Cache\DI\CacheExtension
+
 
 webpack:
     build:
@@ -45,3 +62,27 @@ webpack:
 
     manifest:
     	name: manifest.json
+
+
+events:
+    autoload: true
+    lazy: true
+
+
+nettrine.fixtures:
+	paths:
+		- %appDir%/Database/Fixtures
+
+
+nettrine.migrations:
+	directory: %appDir%/Database/Migrations
+	namespace: App\Database\Migrations
+
+
+orm:
+	entityManagerDecoratorClass: App\Database\Entity\EntityManager
+
+
+orm.annotations:
+	mapping:
+		App\Database\Entity: %appDir%/Database/Entity
