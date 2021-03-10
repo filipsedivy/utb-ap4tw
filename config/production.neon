@@ -1,11 +1,10 @@
 parameters:
-	heroku:
-		database: ::parse_url(::getenv(CLEARDB_DATABASE_URL))
+
 
 dbal:
 	connection:
-		host: %heroku.database.host%
-		user: %heroku.database.user%
-		password: %heroku.database.pass%
-		dbname: ::substr(%heroku.database.path%, 1)
+		host: ::getenv(MYSQL_HOST)
+		user: ::getenv(MYSQL_USER)
+		password: ::getenv(MYSQL_PASSWORD)
+		dbname: ::getenv(MYSQL_DB)
 		driver: pdo_mysql
