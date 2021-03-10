@@ -1,5 +1,9 @@
 # Project UTB / AP4TW
 
+## Project description
+
+CRM system for managing customers, employees, task, notes and files.
+
 ## Technology stack
 
 ### Backend
