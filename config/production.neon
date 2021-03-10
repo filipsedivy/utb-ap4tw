@@ -8,3 +8,8 @@ dbal:
 		password: ::getenv(MYSQL_PASSWORD)
 		dbname: ::getenv(MYSQL_DB)
 		driver: pdo_mysql
+
+
+webpack:
+	devServer:
+		enabled: false
