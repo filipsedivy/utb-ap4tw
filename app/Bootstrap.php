@@ -26,10 +26,10 @@ class Bootstrap
 
         $configurator->addConfig($appDir . '/config/common.neon');
 
-        if ($configurator::detectDebugMode()) {
-            $configurator->addConfig($appDir . '/config/local.neon');
-        } else {
+        if (getenv('STAGE') !== false) {
             $configurator->addConfig($appDir . '/config/production.neon');
+        } else {
+            $configurator->addConfig($appDir . '/config/local.neon');
         }
 
         return $configurator;
