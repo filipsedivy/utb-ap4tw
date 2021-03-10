@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Core\Configurator;
+use Tracy\Debugger;
 
 class Bootstrap
 {
@@ -24,7 +25,12 @@ class Bootstrap
             ->register();
 
         $configurator->addConfig($appDir . '/config/common.neon');
-        $configurator->addConfig($appDir . '/config/local.neon');
+
+        if ($configurator::detectDebugMode()) {
+            $configurator->addConfig($appDir . '/config/local.neon');
+        } else {
+            $configurator->addConfig($appDir . '/config/production.neon');
+        }
 
         return $configurator;
     }
