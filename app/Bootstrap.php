@@ -26,7 +26,7 @@ class Bootstrap
 
         $configurator->addConfig($appDir . '/config/common.neon');
 
-        if (getenv('HEROKU_APP_DIR') !== false) {
+        if (getenv('HEROKU_APPLICATION') !== false) {
             $configurator->addConfig($appDir . '/config/production.neon');
         } else {
             $configurator->addConfig($appDir . '/config/local.neon');
