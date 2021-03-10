@@ -3,3 +3,7 @@ services:
 	- App\Components\SignIn\SignInFactory
 	- App\Components\Menu\MenuFactory
 	- App\Components\ForgotPassword\ForgotPasswordFactory
+	- App\Components\FormNote\FormNoteFactory
+	- App\Components\ViewNote\ViewNoteFactory
+
+	- App\Events\Note\NoteSubscriber

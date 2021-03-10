@@ -33,6 +33,8 @@
     </div>
 
     <div class="content p-4">
+        <div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">{$flash->message}</div>
+
         <div class="row">
             <div class="col pr-2">
                 <h2 class="mb-4" n:block="title">
@@ -53,8 +55,6 @@
         {include content}
     </div>
 </div>
-
-<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 <script src="{webpack application.js}"></script>
 </body>

@@ -1,0 +1,24 @@
+<div class="note">
+    <div class="note-header">
+        <i class="fas fa-fw fa-user"></i> {$note->getCreator()->getName()}
+
+        {if $note->getEdited()}
+            <span class="clock edited" data-toggle="tooltip" title="Vytvořeno: {$note->getCreated()|date:'d. m. Y H:m'}">
+                <i class="fas fa-fw fa-pen-nib"></i>
+                {$note->getEdited()|date:'d. m. Y H:m'}
+            </span>
+        {else}
+            <span class="clock">{$note->getCreated()|date:'d. m. Y H:m'}</span>
+        {/if}
+
+        <div class="note-right">
+            <a href="{plink Note:edit, id => $note->getId()}"><i class="fas fa-fw fa-pen"></i></a>
+            <a n:href="Delete!, id => $note->getId()" onClick="return confirm('Opravdu chcete poznámku smazat?');">
+                <i class="fas fa-fw fa-trash-alt"></i>
+            </a>
+        </div>
+    </div>
+    <div class="note-body">
+        {$note->getNote()|noescape}
+    </div>
+</div>

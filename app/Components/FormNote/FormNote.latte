@@ -1,0 +1,13 @@
+<form n:name="form" class="card">
+    <div class="card-body">
+        {input note, class => 'd-none'}
+        <trix-editor input="{$form['note']->control->id}"></trix-editor>
+    </div>
+
+    <div class="card-footer">
+        {input process, class => 'btn btn-success'}
+        <div class="float-right">
+            <!-- Visibility -->
+        </div>
+    </div>
+</form>

@@ -5,3 +5,9 @@
 {/block}
 
 {block content}
+
+<div class="row">
+    {foreach $notes as $note}
+        <div class="col-md-4">{control "note-$note[id]"}</div>
+    {/foreach}
+</div>

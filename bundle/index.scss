@@ -1,5 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 @import "components/admin";
+@import "components/alert";
+@import "components/note";
+@import "~trix";
 
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
@@ -10,3 +13,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 a.backlink {
   text-decoration: none;
 }
+
+.trix-button-group--file-tools {
+  display: none !important;
+}
+
