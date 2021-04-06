@@ -1,6 +1,8 @@
 services:
 	- App\Router\RouterFactory::createRouter
 
+	- App\Services\User\IdentityRefresher
+
 	- App\Services\User\Authenticator
 	- App\Components\SignIn\SignInFactory
 	- App\Components\Menu\MenuFactory
@@ -8,6 +10,7 @@ services:
 	- App\Components\FormNote\FormNoteFactory
 	- App\Components\ViewNote\ViewNoteFactory
 	- App\Components\Profile\ChangePassword\ChangePasswordFactory
+	- App\Components\Profile\ChangePersonalData\ChangePersonalDataFactory
 
 	- App\Events\Note\NoteSubscriber
 	- App\Events\Employee\EmployeeSubscriber

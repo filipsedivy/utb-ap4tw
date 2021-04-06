@@ -2,6 +2,8 @@
 
 namespace App\Presenters;
 
+use App\Components\Profile\ChangePersonalData\ChangePersonalData;
+use App\Components\Profile\ChangePersonalData\ChangePersonalDataFactory;
 use App\Components\Profile\ChangePassword\ {
     ChangePassword,
     ChangePasswordFactory
@@ -11,10 +13,14 @@ final class ProfilePresenter extends AuthPresenter
 {
     private ChangePasswordFactory $changePasswordFactory;
 
-    public function __construct(ChangePasswordFactory $changePasswordFactory)
+    private ChangePersonalDataFactory $changePersonalDataFactory;
+
+    public function __construct(ChangePasswordFactory $changePasswordFactory,
+                                ChangePersonalDataFactory $changePersonalDataFactory)
     {
         parent::__construct();
         $this->changePasswordFactory = $changePasswordFactory;
+        $this->changePersonalDataFactory = $changePersonalDataFactory;
     }
 
     public function actionDefault(): void
@@ -33,6 +39,18 @@ final class ProfilePresenter extends AuthPresenter
         $control->onPasswordChanged[] = function () {
             $this->entityManager->flush();
             $this->flashMessage('Heslo bylo úspěšně změněno', 'success');
+            $this->redirect('this');
+        };
+
+        return $control;
+    }
+
+    public function createComponentChangePersonalData(): ChangePersonalData
+    {
+        $control = $this->changePersonalDataFactory->create();
+        $control->onUpdate[] = function () {
+            $this->entityManager->flush();
+            $this->flashMessage('Uživatelský profil byl úspěšně uložen', 'success');
             $this->redirect('this');
         };
 

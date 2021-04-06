@@ -23,7 +23,8 @@ final class EmployeeSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ChangePasswordEvent::class => 'changePassword'
+            ChangePasswordEvent::class => 'changePassword',
+            ChangePersonalDataEvent::class => 'changePersonalData'
         ];
     }
 
@@ -37,5 +38,16 @@ final class EmployeeSubscriber implements EventSubscriberInterface
 
         $hashPassword = $this->passwords->hash($event->getPassword());
         $employee->setPassword($hashPassword);
+    }
+
+    public function changePersonalData(ChangePersonalDataEvent $event): void
+    {
+        $employee = $this->entityManager->getEmployeeRepository()->find($event->getUser());
+
+        if (!$employee instanceof Employee) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [$event->getUser()]);
+        }
+
+        $employee->setName($event->getName());
     }
 }

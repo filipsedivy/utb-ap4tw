@@ -12,7 +12,7 @@
 <body class="bg-light">
 
 <div class="container h-100">
-    <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+    <div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">{$flash->message}</div>
 
     {include content}
 </div>
