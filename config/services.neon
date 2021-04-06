@@ -1,9 +1,13 @@
 services:
+	- App\Router\RouterFactory::createRouter
+
 	- App\Services\User\Authenticator
 	- App\Components\SignIn\SignInFactory
 	- App\Components\Menu\MenuFactory
 	- App\Components\ForgotPassword\ForgotPasswordFactory
 	- App\Components\FormNote\FormNoteFactory
 	- App\Components\ViewNote\ViewNoteFactory
+	- App\Components\Profile\ChangePassword\ChangePasswordFactory
 
 	- App\Events\Note\NoteSubscriber
+	- App\Events\Employee\EmployeeSubscriber

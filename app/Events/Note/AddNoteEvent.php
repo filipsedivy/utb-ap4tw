@@ -4,7 +4,7 @@ namespace App\Events\Note;
 
 use App\Database\Entity\Employee;
 
-class AddNoteEvent
+final class AddNoteEvent
 {
     private string $note;
 

@@ -26,12 +26,9 @@ di:
 		parameters: no
 		tags: no
 
+
 routing:
 	debugger: %debugMode%
-
-
-services:
-	- App\Router\RouterFactory::createRouter
 
 
 extensions:
