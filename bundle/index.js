@@ -5,7 +5,6 @@ import "bootstrap";
 import "trix";
 import "bootstrap-switch";
 
-require("./index.scss");
 require("./components/index");
 require("./components/menu");
 require("./components/editor");

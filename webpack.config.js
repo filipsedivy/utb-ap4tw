@@ -5,7 +5,8 @@ const {WebpackManifestPlugin} = require("webpack-manifest-plugin");
 
 module.exports = {
     entry: {
-        application: "./bundle/index.js"
+        application: "./bundle/index.js",
+        style: "./bundle/index.scss"
     },
     mode: (process.env.NODE_ENV === "production") ? "production" : "development",
     module: {
@@ -13,16 +14,38 @@ module.exports = {
             {
                 test: /\.(css)$/i,
                 use: [
+                    MiniCssExtractPlugin.loader,
                     "style-loader",
                     "css-loader"
                 ],
+                exclude: /(node_modules|bower_components)/,
             },
             {
-                test: /\.s[ac]ss$/i,
+                test: /\.(css|sass|scss)$/i,
                 use: [
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader"
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            importLoaders: 2,
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: () => [
+                                require('autoprefixer')
+                            ],
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
                 ]
             },
             {
@@ -66,7 +89,8 @@ module.exports = {
             fileName: "manifest.json"
         }),
         new MiniCssExtractPlugin({
-            filename: "[name]-[contenthash].css"
+            filename: "[name]-[fullhash].css",
+            chunkFilename: "[id]-[chunkhash].css"
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
