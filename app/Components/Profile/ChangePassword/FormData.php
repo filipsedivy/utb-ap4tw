@@ -4,5 +4,7 @@ namespace App\Components\Profile\ChangePassword;
 
 final class FormData
 {
-    public string $password;
+    public string $oldPassword;
+
+    public string $newPassword;
 }
