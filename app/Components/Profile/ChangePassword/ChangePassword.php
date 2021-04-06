@@ -47,12 +47,12 @@ final class ChangePassword extends CoreControl
         $form->addPassword('oldPassword', 'Původní heslo')
             ->setRequired('%label musí být vyplněné');
 
-        $form->addPassword('newPassword', 'Heslo')
+        $form->addPassword('newPassword', 'Nové heslo')
             ->setRequired('%label je nutné zadat')
             ->addRule(Form::MIN_LENGTH, 'Heslo musí být delší než %d znaků', 5)
             ->addRule(Form::NOT_EQUAL, 'Nové heslo nesmí být stejné jako původní', $form['oldPassword']);
 
-        $form->addPassword('checkPassword', 'Opakujte heslo')
+        $form->addPassword('checkPassword', 'Opakujte nové heslo')
             ->setOmitted()
             ->setRequired('%label je nutné zopakovat heslo')
             ->addRule(Form::EQUAL, 'Vyplněné heslo se neshoduje', $form['newPassword']);
