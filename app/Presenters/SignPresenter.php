@@ -29,6 +29,11 @@ final class SignPresenter extends BasePresenter
 
     public function actionIn(): void
     {
+        if ($this->getUser()->isLoggedIn()) {
+            $this->flashMessage('Uživatel již je přihlášen', 'success');
+            $this->redirect('Homepage:');
+        }
+
         $this->getPageInfo()->title = 'Přihlášení';
     }
 
