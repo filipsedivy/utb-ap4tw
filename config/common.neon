@@ -76,8 +76,17 @@ nettrine.migrations:
 	namespace: App\Database\Migrations
 
 
+dbal:
+	debug:
+		panel: %debugMode%
+
+
 orm:
 	entityManagerDecoratorClass: App\Database\Entity\EntityManager
+
+
+annotations:
+	debug: %debugMode%
 
 
 orm.annotations:
