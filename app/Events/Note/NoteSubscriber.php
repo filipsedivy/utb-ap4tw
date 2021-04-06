@@ -22,6 +22,9 @@ final class NoteSubscriber implements EventSubscriberInterface
         $this->user = $user;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -52,7 +55,8 @@ final class NoteSubscriber implements EventSubscriberInterface
         $note = $this->entityManager->getNoteRepository()->find($event->getId());
 
         if (!$note instanceof Note) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$event->getId()]);
+            $userId = (string)$event->getId();
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
         }
 
         $this->entityManager->remove($note);
@@ -63,7 +67,8 @@ final class NoteSubscriber implements EventSubscriberInterface
         $note = $this->entityManager->getNoteRepository()->find($event->getId());
 
         if (!$note instanceof Note) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$event->getId()]);
+            $userId = (string)$event->getId();
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
         }
 
         $note->setNote($event->getNote());

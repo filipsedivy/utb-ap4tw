@@ -13,6 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 final class ViewNote extends CoreControl
 {
+    /** @var callable[] */
     public array $onDelete = [];
 
     private Note $note;

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 final class NoteRepository extends EntityRepository
 {
+    /** @return array<int, array<string, int>> */
     public function getAccessibleNotes(): array
     {
         $qb = $this->createQueryBuilder('note');

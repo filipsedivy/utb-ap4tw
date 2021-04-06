@@ -9,7 +9,7 @@ final class CustomerPresenter extends AuthPresenter
         $this->getPageInfo()->title = 'Zákazníci';
     }
 
-    public function actionAdd()
+    public function actionAdd(): void
     {
         $this->getPageInfo()->title = 'Přidat zákazníka';
         $this->getPageInfo()->backlink = $this->link('Customer:');

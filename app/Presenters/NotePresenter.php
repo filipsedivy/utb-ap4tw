@@ -27,6 +27,7 @@ final class NotePresenter extends AuthPresenter
     {
         $this->getPageInfo()->title = 'Poznámky';
         $this->template->notes = $this->entityManager->getNoteRepository()->getAccessibleNotes();
+        dumpe($this->template->notes);
     }
 
     public function actionAdd(): void

@@ -12,6 +12,7 @@ use Nette\Security\User;
  */
 final class SignIn extends CoreControl
 {
+    /** @var callable[] */
     public array $onSuccess = [];
 
     private User $user;
@@ -45,6 +46,8 @@ final class SignIn extends CoreControl
     public function processForm(Form $form): void
     {
         $values = $form->getValues(new FormData);
+        assert($values instanceof FormData);
+
         try {
             $this->user->login($values->username, $values->password);
             $this->onSuccess();
