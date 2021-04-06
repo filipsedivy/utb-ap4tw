@@ -16,8 +16,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 final class FormNote extends CoreControl
 {
+    /** @var callable[] */
     public array $onCreate = [];
 
+    /** @var callable[] */
     public array $onEdit = [];
 
     private EventDispatcherInterface $eventDispatcher;
@@ -66,9 +68,10 @@ final class FormNote extends CoreControl
 
     public function processCreate(Form $form): void
     {
-        $values = $form->getValues(new FormData);
+        $data = $form->getValues(new FormData);
+        assert($data instanceof FormData);
 
-        $event = new AddNoteEvent($values->note);
+        $event = new AddNoteEvent($data->note);
         $this->eventDispatcher->dispatch($event);
 
         $this->onCreate();
@@ -76,9 +79,10 @@ final class FormNote extends CoreControl
 
     public function processUpdate(Form $form): void
     {
-        $values = $form->getValues(new FormData);
+        $data = $form->getValues(new FormData);
+        assert($data instanceof FormData);
 
-        $event = new UpdateNoteEvent($this->note->getId(), $values->note);
+        $event = new UpdateNoteEvent($this->note->getId(), $data->note);
         $this->eventDispatcher->dispatch($event);
 
         $this->onEdit();

@@ -9,11 +9,15 @@ trait TRepositories
 {
     final public function getEmployeeRepository(): EmployeeRepository
     {
-        return $this->getRepository(Employee::class);
+        $repo = $this->getRepository(Employee::class);
+        assert($repo instanceof EmployeeRepository);
+        return $repo;
     }
 
     final public function getNoteRepository(): NoteRepository
     {
-        return $this->getRepository(Note::class);
+        $repo = $this->getRepository(Note::class);
+        assert($repo instanceof NoteRepository);
+        return $repo;
     }
 }

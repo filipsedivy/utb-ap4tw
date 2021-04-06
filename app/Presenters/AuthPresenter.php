@@ -26,6 +26,9 @@ abstract class AuthPresenter extends BasePresenter
         return $this->menuFactoryControl->create();
     }
 
+    /**
+     * @param mixed $element
+     */
     final public function checkRequirements($element): void
     {
         if (!$this->getUser()->isLoggedIn()) {

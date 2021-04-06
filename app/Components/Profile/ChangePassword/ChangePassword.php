@@ -66,7 +66,8 @@ final class ChangePassword extends CoreControl
 
     public function onSuccess(Form $form): void
     {
-        $data = $form->getValues(FormData::class);
+        $data = $form->getValues(new FormData);
+        assert($data instanceof FormData);
 
         $employee = $this->employeeRepository->find($this->user->id);
 
