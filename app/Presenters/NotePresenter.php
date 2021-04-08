@@ -69,6 +69,7 @@ final class NotePresenter extends AuthPresenter
             $control = $this->viewNoteFactory->create($note);
 
             $control->onDelete[] = function () {
+                $this->entityManager->flush();
                 $this->flashMessage('Poznámka byla odstraněna', 'success');
                 $this->redirect('this');
             };
