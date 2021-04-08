@@ -59,7 +59,7 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/i,
                 use: [
                     {
-                        loader: "url-loader",
+                        loader: "file-loader",
                         options: {
                             limit: 8192,
                             name: "[name].[hash:7].[ext]"
@@ -71,7 +71,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/i,
+                test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
                 use: [
                     {
                         loader: "url-loader",

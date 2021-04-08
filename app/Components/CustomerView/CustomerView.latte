@@ -1,0 +1,26 @@
+{if count($customers) > 0}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Název</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr n:foreach="$customers as $customer">
+                <td>{$customer->getName()}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{else}
+    <div class="text-center">
+        <img src="{webpack "inbox.png"}" alt="Inbox" class="mb-4">
+        <h4>Žádný zákazník nebyl nalezený</h4>
+        <p class="lead">
+            Bohužel jsme v databázi nenašli žádnou položku, kterou bychom mohli ukázat. <br />
+            Nechcete třeba <a href="{plink Customer:add}">přidat nového zákazníka</a>?
+        </p>
+    </div>
+{/if}

@@ -9,6 +9,8 @@ require("./components/index");
 require("./components/menu");
 require("./components/editor");
 
+require.context("./static/icons/", true, /\.(png)$/);
+
 document.addEventListener('DOMContentLoaded', naja.initialize.bind(naja));
 netteForms.initOnLoad();
 

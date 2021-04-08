@@ -18,9 +18,9 @@ class Customer extends BaseEntity
     private string $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="boolean")
      */
-    private string $surname;
+    private bool $archived;
 
     /**
      * @ORM\ManyToMany(targetEntity="CustomerContact")
@@ -33,5 +33,26 @@ class Customer extends BaseEntity
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
+        $this->archive = false;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): void
+    {
+        $this->archived = $archived;
     }
 }

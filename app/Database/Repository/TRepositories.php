@@ -2,6 +2,7 @@
 
 namespace App\Database\Repository;
 
+use App\Database\Entity\Customer;
 use App\Database\Entity\Employee;
 use App\Database\Entity\Note;
 
@@ -18,6 +19,13 @@ trait TRepositories
     {
         $repo = $this->getRepository(Note::class);
         assert($repo instanceof NoteRepository);
+        return $repo;
+    }
+
+    final public function getCustomerRepository(): CustomerRepository
+    {
+        $repo = $this->getRepository(Customer::class);
+        assert($repo instanceof CustomerRepository);
         return $repo;
     }
 }
