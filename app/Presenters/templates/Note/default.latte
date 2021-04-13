@@ -6,8 +6,20 @@
 
 {block content}
 
-<div class="row">
-    {foreach $notes as $note}
-        <div class="col-md-4">{control "note-$note[id]"}</div>
-    {/foreach}
-</div>
+
+{if count($notes) > 0}
+    <div class="row">
+        {foreach $notes as $note}
+            <div class="col-md-4">{control "note-$note[id]"}</div>
+        {/foreach}
+    </div>
+{else}
+    <div class="text-center">
+        <img src="{webpack "booket.png"}" alt="Inbox" class="mb-4">
+        <h4>Žádná poznámka nebyla nalezena</h4>
+        <p class="lead">
+            Bohužel jsme v databázi nenašli žádnou položku, kterou bychom mohli ukázat. <br/>
+            Nechcete třeba <a n:href="Note:add">přidat novou poznámku</a>?
+        </p>
+    </div>
+{/if}

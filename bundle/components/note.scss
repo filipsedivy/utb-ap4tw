@@ -1,27 +1,48 @@
 $note-height: 200px;
-$note-height-header: 50px;
-$note-height-body: $note-height - $note-height-header;
 
 .note {
-  background-color: #ffc;
+  background-color: #ffeda5;
   padding: 5px;
-  height: $note-height;
   margin-bottom: 15px;
   border: 1px solid lightgray;
   border-radius: 5px;
 
   > .note-header {
-    border-bottom: 1px solid lightgray;
-    margin-bottom: 5px;
+    //margin-bottom: 5px;
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 14px;
+    margin-top: 5px;
 
-    > .note-right {
-      float: right;
+    > .note-author {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  > hr {
+    border-top: 1px solid rgba(0, 0, 0, 0.17);
+    margin: 12px 0;
+  }
+
+  > .note-footer {
+    padding-bottom: 5px;
+    text-align: center;
+
+    > a {
+      font-size: 20px;
+      margin: 0 12px;
+      color: hsla(0, 0%, 0%, 0.2);
+      transition: all 0.2s;
+    }
+
+    > a:hover {
+      color: rgb(0, 0, 0, 0.4);
     }
   }
 
   > .note-body {
     overflow-x: auto;
-    height: $note-height-body;
+    height: $note-height;
   }
 
   .clock {
