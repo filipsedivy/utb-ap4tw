@@ -1,15 +1,23 @@
+{varType App\Database\Entity\Customer $customer}
+
 {if count($customers) > 0}
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
                 <th>Název</th>
+                <th>Vytvořeno</th>
             </tr>
             </thead>
 
             <tbody>
             <tr n:foreach="$customers as $customer">
-                <td>{$customer->getName()}</td>
+                <td>
+                    <a href="{plink Customer:edit, id: $customer->getId()}">
+                        {$customer->getName()}
+                    </a>
+                </td>
+                <td>{$customer->getCreatedAt()|date:'d.m.Y H:i'}</td>
             </tr>
             </tbody>
         </table>

@@ -21,7 +21,7 @@ final class CustomerView extends CoreControl
     {
         $result = $this->entityManager->getCustomerRepository()->findBy([
             'archived' => $this->showArchived
-        ]);
+        ], ['createdAt' => 'DESC']);
 
         $this->template->customers = $result;
     }

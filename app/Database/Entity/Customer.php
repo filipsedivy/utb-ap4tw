@@ -2,9 +2,11 @@
 
 namespace App\Database\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Nette\Utils;
 
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\CustomerRepository")
@@ -30,10 +32,16 @@ class Customer extends BaseEntity
      */
     private Collection $contacts;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTime $createdAt;
+
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
-        $this->archive = false;
+        $this->archived = false;
+        $this->createdAt = new DateTime;
     }
 
     public function getName(): string
@@ -54,5 +62,10 @@ class Customer extends BaseEntity
     public function setArchived(bool $archived): void
     {
         $this->archived = $archived;
+    }
+
+    public function getCreatedAt(): Utils\DateTime
+    {
+        return Utils\DateTime::from($this->createdAt);
     }
 }

@@ -9,9 +9,11 @@ services:
 	- App\Components\ForgotPassword\ForgotPasswordFactory
 	- App\Components\FormNote\FormNoteFactory
 	- App\Components\ViewNote\ViewNoteFactory
+	- App\Components\FormCustomer\FormCustomerFactory
 	- App\Components\Profile\ChangePassword\ChangePasswordFactory
 	- App\Components\Profile\ChangePersonalData\ChangePersonalDataFactory
 	- App\Components\CustomerView\CustomerViewFactory
 
 	- App\Events\Note\NoteSubscriber
 	- App\Events\Employee\EmployeeSubscriber
+	- App\Events\Customer\CustomerSubscriber
