@@ -2,7 +2,6 @@
 
 namespace App\Components\FormCustomer;
 
-use _HumbugBox5ccdb2ccdb35\phpDocumentor\Reflection\Types\This;
 use App\Core\UI\CoreControl;
 use App\Database\Entity\Customer;
 use App\Database\Entity\EntityManager;

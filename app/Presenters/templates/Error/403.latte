@@ -1,7 +1,32 @@
-{block content}
-<h1 n:block=title>Access Denied</h1>
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
 
-<p>You do not have permission to view this page. Please try contact the web
-site administrator if you believe you should be able to view this page.</p>
+    <link rel="stylesheet" href="{webpack style.css}">
 
-<p><small>error 403</small></p>
+    <title>Přístup zamítnut | CRM Systém</title>
+</head>
+
+<body class="bg-light">
+
+<div class="container-fluid text-center">
+    <div class="px-5 py-5">
+        <h1 class="not-found">403</h1>
+        <span class="oops-text">Přístup k dané stránce nebyl povolen</span>
+        <h4 class="not-found-text mt-4">
+            Stránku kterou se snažíte navštívit zamítla Váš přístup.
+            Může to být způsobené buď neplatou adresou nebo nízkým oprávněním.
+        </h4>
+        <div class="text-center mt-4 mb-5">
+            <a n:href="Homepage:" class="btn btn-success send px-3">
+                <i class="fa fa-long-arrow-left mr-1"></i> Hlavní stránka
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="{webpack application.js}"></script>
+</body>
+</html>
