@@ -4,19 +4,16 @@ namespace App\Presenters;
 
 use App\Core\Presenter\PageInfo;
 use App\Database\Entity\EntityManager;
-use App\Services\User\IdentityRefresher;
-use Doctrine\ORM\EntityNotFoundException;
-use App\Components\Menu\ {
-    Menu,
-    MenuFactory
-};
 use Nette\Application\UI\Presenter;
 
+/**
+ * @property-read PageInfo $pageInfo
+*/
 abstract class BasePresenter extends Presenter
 {
     public EntityManager $entityManager;
 
-    private ?PageInfo $pageInfo = null;
+    private ?PageInfo $pageInfoEntity = null;
 
     final public function injectEntityManager(EntityManager $entityManager): void
     {
@@ -25,11 +22,11 @@ abstract class BasePresenter extends Presenter
 
     final public function getPageInfo(): PageInfo
     {
-        if ($this->pageInfo === null) {
-            $this->pageInfo = new PageInfo();
+        if ($this->pageInfoEntity === null) {
+            $this->pageInfoEntity = new PageInfo();
         }
 
-        return $this->pageInfo;
+        return $this->pageInfoEntity;
     }
 
     public function afterRender(): void
