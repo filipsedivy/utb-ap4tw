@@ -3,16 +3,22 @@
 namespace App\Database\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Nette;
 
+/**
+ * @property-read int $id
+*/
 abstract class BaseEntity
 {
+    use Nette\SmartObject;
+
     /**
      * @var int
      * @ORM\Column(type="integer", nullable=false, options={"unsigned"=true})
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected int $id;
 
     public function getId(): int
     {

@@ -1,8 +1,6 @@
 services:
 	- App\Router\RouterFactory::createRouter
 
-	- App\Services\User\IdentityRefresher
-
 	- App\Services\User\Authenticator
 	- App\Components\SignIn\SignInFactory
 	- App\Components\Menu\MenuFactory

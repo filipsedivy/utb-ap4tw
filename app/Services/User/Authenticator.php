@@ -2,11 +2,12 @@
 
 namespace App\Services\User;
 
+use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
 use Nette;
 use Nette\Security\IIdentity;
 
-final class Authenticator implements Nette\Security\Authenticator
+final class Authenticator implements Nette\Security\Authenticator, Nette\Security\IdentityHandler
 {
     private EntityManager $entityManager;
 
@@ -39,5 +40,37 @@ final class Authenticator implements Nette\Security\Authenticator
         ];
 
         return new Nette\Security\SimpleIdentity($employee->getId(), [], $employeeToArray);
+    }
+
+
+    public function wakeupIdentity(IIdentity $identity): ?IIdentity
+    {
+        $employee = $this->entityManager->getEmployeeRepository()->findOneBy([
+            'authToken' => $identity->getId()
+        ]);
+
+        if (!$employee instanceof Employee) {
+            return null;
+        }
+
+        $employeeToArray = [
+            'username' => $employee->getUsername(),
+            'name' => $employee->getName(),
+            'email' => $employee->getEmail()
+        ];
+
+        return new Nette\Security\SimpleIdentity($employee->getId(), [], $employeeToArray);
+    }
+
+    public function sleepIdentity(IIdentity $identity): IIdentity
+    {
+        $token = Nette\Utils\Random::generate(13);
+        $employee = $this->entityManager->getEmployeeRepository()->find($identity->getId());
+        assert($employee instanceof Employee);
+
+        $employee->setAuthToken($token);
+        $this->entityManager->flush($employee);
+
+        return new Nette\Security\SimpleIdentity($token);
     }
 }

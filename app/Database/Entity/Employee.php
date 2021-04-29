@@ -7,6 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\EmployeeRepository")
  * @ORM\Table(name="employee")
+ * @property-read string $username
+ * @property-read string $email
+ * @property-read bool $active
+ * @property-read ?string $authToken
  */
 class Employee extends BaseEntity
 {
@@ -34,6 +38,11 @@ class Employee extends BaseEntity
      * @ORM\Column(type="boolean")
      */
     private bool $active;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $authToken;
 
     public function __construct()
     {
@@ -88,5 +97,21 @@ class Employee extends BaseEntity
     public function setActive(bool $active): void
     {
         $this->active = $active;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAuthToken(): ?string
+    {
+        return $this->authToken;
+    }
+
+    /**
+     * @param string|null $authToken
+     */
+    public function setAuthToken(?string $authToken): void
+    {
+        $this->authToken = $authToken;
     }
 }

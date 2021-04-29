@@ -18,6 +18,8 @@ session:
 
 security:
 	debugger: %debugMode%
+	authentication:
+		storage: cookie
 
 
 di:

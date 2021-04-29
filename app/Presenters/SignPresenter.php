@@ -6,6 +6,7 @@ use App\Components\ForgotPassword\ForgotPassword;
 use App\Components\ForgotPassword\ForgotPasswordFactory;
 use App\Components\SignIn\SignIn;
 use App\Components\SignIn\SignInFactory;
+use App\Database\Entity\Employee;
 
 final class SignPresenter extends BasePresenter
 {
@@ -40,6 +41,12 @@ final class SignPresenter extends BasePresenter
     public function actionOut(): void
     {
         if ($this->getUser()->isLoggedIn()) {
+            $user = $this->entityManager->getEmployeeRepository()->find($this->user->id);
+            if ($user instanceof Employee) {
+                $user->setAuthToken(null);
+                $this->entityManager->flush($user);
+            }
+
             $this->getUser()->logout(true);
         }
 

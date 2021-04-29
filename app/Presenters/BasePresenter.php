@@ -18,16 +18,9 @@ abstract class BasePresenter extends Presenter
 
     private ?PageInfo $pageInfo = null;
 
-    private IdentityRefresher $identityRefresher;
-
     final public function injectEntityManager(EntityManager $entityManager): void
     {
         $this->entityManager = $entityManager;
-    }
-
-    final public function injectIdentityRefresher(IdentityRefresher $identityRefresher): void
-    {
-        $this->identityRefresher = $identityRefresher;
     }
 
     final public function getPageInfo(): PageInfo
@@ -37,19 +30,6 @@ abstract class BasePresenter extends Presenter
         }
 
         return $this->pageInfo;
-    }
-
-    public function startup(): void
-    {
-        parent::startup();
-
-        try {
-            $this->identityRefresher->update();
-        } catch (EntityNotFoundException $e) {
-            $this->user->logout(true);
-            $this->flashMessage('Uživatelský účet neexistuje', 'warning');
-            $this->redirect('Sign:in');
-        }
     }
 
     public function afterRender(): void
