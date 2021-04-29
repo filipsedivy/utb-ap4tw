@@ -9,6 +9,7 @@ use App\Events\Customer\AddCustomerEvent;
 use App\Events\Customer\EditCustomerEvent;
 use Nette\Application\UI;
 use Nette\Forms\Controls\TextBase;
+use Nette\Http\IResponse;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -81,7 +82,13 @@ final class FormCustomer extends CoreControl
         $form->addText('name', 'Jméno')
             ->setRequired('%label musí být zadáné');
 
-        if ($this->customer instanceof Customer && $this->customer->isArchived()) {
+        $form->onValidate[] = function () {
+            if ($this->customer->isArchived()) {
+                $this->error('Note is archived', IResponse::S403_FORBIDDEN);
+            }
+        };
+
+        if ($this->customer instanceof Customer) {
             $form->addSubmit('process', 'Upravit zákazníka');
             $form->onSuccess[] = [$this, 'editCustomer'];
         } else {
