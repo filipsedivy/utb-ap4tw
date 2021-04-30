@@ -10,6 +10,10 @@ body {
   overflow-x: hidden;
 }
 
+.progress-disk-size {
+  height: 33px !important;
+}
+
 .navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-text {
   color: rgba(255, 255, 255, .75);
 }

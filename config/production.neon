@@ -10,6 +10,15 @@ dbal:
 		driver: pdo_mysql
 
 
+mail:
+	smtp: true
+	host: ::getenv(SMTP_HOST)
+	username: ::getenv(SMTP_USERNAME)
+	password: ::getenv(SMTP_PASSWORD)
+	secure: tls
+	port: 587
+
+
 webpack:
 	devServer:
 		enabled: false

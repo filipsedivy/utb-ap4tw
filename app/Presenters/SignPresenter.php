@@ -2,25 +2,28 @@
 
 namespace App\Presenters;
 
-use App\Components\ForgotPassword\ForgotPassword;
-use App\Components\ForgotPassword\ForgotPasswordFactory;
-use App\Components\SignIn\SignIn;
-use App\Components\SignIn\SignInFactory;
-use App\Database\Entity\Employee;
+use App\Database\Entity;
+use App\Components;
 
 final class SignPresenter extends BasePresenter
 {
-    private SignInFactory $signInFactory;
+    private Components\SignIn\SignInFactory $signInFactory;
 
-    private ForgotPasswordFactory $forgotPasswordFactory;
+    private Components\ForgotPassword\ForgotPasswordFactory $forgotPasswordFactory;
 
-    public function __construct(SignInFactory $signInFactory,
-                                ForgotPasswordFactory $forgotPasswordFactory)
+    private Components\RecoveryPassword\RecoveryPasswordFactory $recoveryPasswordFactory;
+
+    private ?Entity\RecoveryPassword $cursor = null;
+
+    public function __construct(Components\SignIn\SignInFactory $signInFactory,
+                                Components\ForgotPassword\ForgotPasswordFactory $forgotPasswordFactory,
+                                Components\RecoveryPassword\RecoveryPasswordFactory $recoveryPasswordFactory)
     {
         parent::__construct();
 
         $this->signInFactory = $signInFactory;
         $this->forgotPasswordFactory = $forgotPasswordFactory;
+        $this->recoveryPasswordFactory = $recoveryPasswordFactory;
     }
 
     public function actionDefault(): void
@@ -42,7 +45,7 @@ final class SignPresenter extends BasePresenter
     {
         if ($this->getUser()->isLoggedIn()) {
             $user = $this->entityManager->getEmployeeRepository()->find($this->user->id);
-            if ($user instanceof Employee) {
+            if ($user instanceof Entity\Employee) {
                 $user->setAuthToken(null);
                 $this->entityManager->flush($user);
             }
@@ -53,12 +56,31 @@ final class SignPresenter extends BasePresenter
         $this->redirect("Sign:in");
     }
 
-    public function actionForgotPassword(): void
+    public function actionForgotPassword(?string $id = null): void
     {
-        $this->getPageInfo()->title = 'Zapomenuté heslo';
+        if ($this->getUser()->isLoggedIn()) {
+            $this->flashMessage('Uživatel již je přihlášen', 'success');
+            $this->redirect('Homepage:');
+        }
+
+        if ($id === null) {
+            $this->pageInfo->title = 'Zapomenuté heslo';
+            $this->setView('forgotPassword');
+        } else {
+            $this->pageInfo->title = 'Obnovení hesla';
+            $this->setView('setPassword');
+
+            $cursor = $this->entityManager->getRecoveryPasswordRepository()->findByToken($id);
+            if (!$cursor instanceof Entity\RecoveryPassword) {
+                $this->flashMessage('Adresa pro obnovu hesla již vypršela nebo je neplatná', 'warning');
+                $this->redirect('in');
+            }
+
+            $this->cursor = $cursor;
+        }
     }
 
-    public function createComponentSignIn(): SignIn
+    public function createComponentSignIn(): Components\SignIn\SignIn
     {
         $control = $this->signInFactory->create();
         $control->onSuccess[] = function () {
@@ -68,8 +90,30 @@ final class SignPresenter extends BasePresenter
         return $control;
     }
 
-    public function createComponentForgotPassword(): ForgotPassword
+    public function createComponentForgotPassword(): Components\ForgotPassword\ForgotPassword
     {
-        return $this->forgotPasswordFactory->create();
+        $control = $this->forgotPasswordFactory->create();
+        $control->onSuccess[] = function () {
+            $this->entityManager->flush();
+            $this->flashMessage('Pokud uživatelský účet existuje, byl zaslán odkaz pro obnovu hesla', 'success');
+            $this->redirect('in');
+        };
+
+        return $control;
+    }
+
+    public function createComponentRecoveryPassword(): \App\Components\RecoveryPassword\RecoveryPassword
+    {
+        if (!$this->cursor instanceof Entity\RecoveryPassword) {
+            $this->error('Cursor not exists');
+        }
+
+        $control = $this->recoveryPasswordFactory->create($this->cursor);
+        $control->onSuccess[] = function () {
+            $this->flashMessage('Uživatelské heslo bylo úspěšně změněno', 'success');
+            $this->redirect('Homepage:');
+        };
+
+        return $control;
     }
 }

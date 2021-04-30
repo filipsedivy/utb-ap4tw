@@ -3,10 +3,31 @@
 namespace App\Components\ForgotPassword;
 
 use App\Core\UI\CoreControl;
+use App\Database\Entity\Employee;
+use App\Database\Entity\EntityManager;
+use App\Database\Repository\EmployeeRepository;
+use App\Events\RecoveryPassword\SendRecoveryLinkEvent;
 use Nette\Application\UI\Form;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @method void onSuccess()
+ */
 final class ForgotPassword extends CoreControl
 {
+    /** @var callable[] */
+    public array $onSuccess = [];
+
+    private EventDispatcherInterface $eventDispatcher;
+
+    private EmployeeRepository $repository;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, EntityManager $entityManager)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->repository = $entityManager->getEmployeeRepository();
+    }
+
     public function createComponentForm(): Form
     {
         $form = new Form();
@@ -21,8 +42,14 @@ final class ForgotPassword extends CoreControl
         return $form;
     }
 
-    public function processForm(Form $form): void
+    public function processForm(Form $form, FormData $values): void
     {
+        $employee = $this->repository->findOneBy(['username' => $values->username]);
+        if ($employee instanceof Employee) {
+            $event = new SendRecoveryLinkEvent($employee);
+            $this->eventDispatcher->dispatch($event);
+        }
 
+        $this->onSuccess();
     }
 }

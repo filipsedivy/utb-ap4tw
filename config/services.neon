@@ -11,7 +11,13 @@ services:
 	- App\Components\Profile\ChangePassword\ChangePasswordFactory
 	- App\Components\Profile\ChangePersonalData\ChangePersonalDataFactory
 	- App\Components\CustomerView\CustomerViewFactory
+	- App\Components\FileSystem\FileSystemFactory
+	- App\Components\RecoveryPassword\RecoveryPasswordFactory
 
 	- App\Events\Note\NoteSubscriber
 	- App\Events\Employee\EmployeeSubscriber
 	- App\Events\Customer\CustomerSubscriber
+	- App\Events\RecoveryPassword\RecoveryPasswordSubscriber
+	- App\Events\Mail\MailSubscriber
+
+	- App\Components\Dashboard\UI\Total\TotalFactory

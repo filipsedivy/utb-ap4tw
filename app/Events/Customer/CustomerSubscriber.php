@@ -39,7 +39,7 @@ final class CustomerSubscriber implements EventSubscriberInterface
         $entity = $this->entityManager->getCustomerRepository()->find($event->getCustomerId());
 
         if (!$entity instanceof Customer) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, [$event->getCustomerId()]);
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, [(string)$event->getCustomerId()]);
         }
 
         if ($event->getName() !== null) {

@@ -1,3 +1,6 @@
+{varType bool $isEditMode}
+{varType bool $isArchived}
+
 <div class="card">
     {form customerForm, class => 'card-body'}
         <div class="alert alert-warning" n:ifset="$isArchived">
@@ -10,15 +13,20 @@
             {input name, class => 'form-control'}
         </div>
 
-        {if !isset($isArchived)}
+        {if $isEditMode && !isset($isArchived)}
             {input process, class => 'btn btn-success'}
 
-            {if $isEditMode}
-                <a n:href="Archive" class="btn btn-danger"
-                                    onclick="return confirm('Opravdu již nechcete pracovat s tímto zákazníkem?')">
-                    Archivovat
-                </a>
-            {/if}
+            <a n:href="Archive" class="btn btn-danger"
+                                onclick="return confirm('Opravdu již nechcete pracovat s tímto zákazníkem?')">
+                Archivovat
+            </a>
+        {elseif isset($isArchived) && $isArchived}
+            <a n:href="CancelArchive" class="btn btn-danger"
+                                      onclick="return confirm('Chcete zažít pracovat se zákazníkem?')">
+                Zrušit archiv
+            </a>
+        {else}
+            {input process, class => 'btn btn-success'}
         {/if}
     {/form}
 </div>

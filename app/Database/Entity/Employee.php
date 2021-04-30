@@ -8,9 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Database\Repository\EmployeeRepository")
  * @ORM\Table(name="employee")
  * @property-read string $username
+ * @property-read string $name
  * @property-read string $email
  * @property-read bool $active
  * @property-read ?string $authToken
+ * @property-read int $diskSpace
  */
 class Employee extends BaseEntity
 {
@@ -43,6 +45,11 @@ class Employee extends BaseEntity
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $authToken;
+
+    /**
+     * @ORM\Column(type="integer", options={"default": 512000, "unsigned": true})
+    */
+    private int $diskSpace = 512000;
 
     public function __construct()
     {
@@ -99,19 +106,23 @@ class Employee extends BaseEntity
         $this->active = $active;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAuthToken(): ?string
     {
         return $this->authToken;
     }
 
-    /**
-     * @param string|null $authToken
-     */
     public function setAuthToken(?string $authToken): void
     {
         $this->authToken = $authToken;
+    }
+
+    public function getDiskSpace(): int
+    {
+        return $this->diskSpace;
+    }
+
+    public function setDiskSpace(int $diskSpace): void
+    {
+        $this->diskSpace = $diskSpace;
     }
 }

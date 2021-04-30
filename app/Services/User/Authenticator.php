@@ -33,13 +33,7 @@ final class Authenticator implements Nette\Security\Authenticator, Nette\Securit
             throw new Nette\Security\AuthenticationException('Bad password');
         }
 
-        $employeeToArray = [
-            'username' => $employee->getUsername(),
-            'name' => $employee->getName(),
-            'email' => $employee->getEmail()
-        ];
-
-        return new Nette\Security\SimpleIdentity($employee->getId(), [], $employeeToArray);
+        return $this->createIdentity($employee);
     }
 
 
@@ -53,13 +47,7 @@ final class Authenticator implements Nette\Security\Authenticator, Nette\Securit
             return null;
         }
 
-        $employeeToArray = [
-            'username' => $employee->getUsername(),
-            'name' => $employee->getName(),
-            'email' => $employee->getEmail()
-        ];
-
-        return new Nette\Security\SimpleIdentity($employee->getId(), [], $employeeToArray);
+        return $this->createIdentity($employee);
     }
 
     public function sleepIdentity(IIdentity $identity): IIdentity
@@ -72,5 +60,22 @@ final class Authenticator implements Nette\Security\Authenticator, Nette\Securit
         $this->entityManager->flush($employee);
 
         return new Nette\Security\SimpleIdentity($token);
+    }
+
+    private function createIdentity(Employee $employee): Nette\Security\SimpleIdentity
+    {
+        $fileSystemRepository = $this->entityManager->getFileSystemRepository();
+        $usageDiskSpace = $fileSystemRepository->getUsageByUser($employee);
+
+        return new Nette\Security\SimpleIdentity($employee->id, [], [
+            'username' => $employee->username,
+            'name' => $employee->name,
+            'email' => $employee->email,
+            'disk' => [
+                'space' => $employee->diskSpace,
+                'usage' => $usageDiskSpace,
+                'free' => $employee->diskSpace - $usageDiskSpace
+            ]
+        ]);
     }
 }

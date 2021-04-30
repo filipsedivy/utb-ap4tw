@@ -9,6 +9,8 @@ use Tracy\Debugger;
 
 class Bootstrap
 {
+    public const MAIL_DIR = __DIR__ . '/Mail';
+
     public static function boot(): Configurator
     {
         $configurator = new Configurator;

@@ -78,6 +78,12 @@ final class CustomerPresenter extends AuthPresenter
             $this->redirect('Customer:', ['id' => null]);
         };
 
+        $control->onCancelArchived[] = function () {
+            $this->entityManager->flush();
+            $this->flashMessage('Zákazník byl odebrán z archivu', 'success');
+            $this->redirect('this');
+        };
+
         return $control;
     }
 }

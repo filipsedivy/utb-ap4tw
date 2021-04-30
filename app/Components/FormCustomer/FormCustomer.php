@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @method void onCreate()
  * @method void onEdit()
  * @method void onArchived()
+ * @method void onCancelArchived()
  */
 final class FormCustomer extends CoreControl
 {
@@ -27,6 +28,9 @@ final class FormCustomer extends CoreControl
 
     /** @var callable[] */
     public array $onArchived = [];
+
+    /** @var callable[] */
+    public array $onCancelArchived = [];
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -83,7 +87,7 @@ final class FormCustomer extends CoreControl
             ->setRequired('%label musí být zadáné');
 
         $form->onValidate[] = function () {
-            if ($this->customer->isArchived()) {
+            if ($this->customer !== null && $this->customer->isArchived()) {
                 $this->error('Note is archived', IResponse::S403_FORBIDDEN);
             }
         };
@@ -118,5 +122,12 @@ final class FormCustomer extends CoreControl
         $event = new EditCustomerEvent($this->customer->getId(), null, true);
         $this->eventDispatcher->dispatch($event);
         $this->onArchived();
+    }
+
+    public function handleCancelArchive(): void
+    {
+        $event = new EditCustomerEvent($this->customer->getId(), null, false);
+        $this->eventDispatcher->dispatch($event);
+        $this->onCancelArchived();
     }
 }

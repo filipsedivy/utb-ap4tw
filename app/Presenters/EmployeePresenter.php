@@ -8,4 +8,16 @@ final class EmployeePresenter extends AuthPresenter
     {
         $this->pageInfo->title = 'Zaměstnanci';
     }
+
+    public function actionAdd(): void
+    {
+        $this->pageInfo->title = 'Přidat zaměstnance';
+        $this->pageInfo->backlink = $this->link('default');
+    }
+
+    public function actionEdit(): void
+    {
+        $this->pageInfo->title = 'Upravit zaměstnance';
+        $this->pageInfo->backlink = $this->link('default');
+    }
 }
