@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Database\Entity;
 
@@ -41,7 +43,7 @@ class Customer extends BaseEntity
     {
         $this->contacts = new ArrayCollection();
         $this->archived = false;
-        $this->createdAt = new DateTime;
+        $this->createdAt = new DateTime();
     }
 
     public function getName(): string
