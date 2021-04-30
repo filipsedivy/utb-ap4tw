@@ -1,0 +1,26 @@
+parameters:
+
+
+dbal:
+	connection:
+		host: 127.0.0.1
+		user: root
+		password: root
+		dbname: utb-ap4tw
+		driver: pdo_mysql
+
+
+mail:
+	smtp: true
+	host: smtp.mailtrap.io
+	username: username
+	password: password
+	secure: tls
+	port: 587
+
+
+webpack:
+    devServer:
+        enabled: %debugMode%
+        url: http://localhost:3180
+        timeout: 0.1
