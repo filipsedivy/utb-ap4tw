@@ -43,7 +43,9 @@
 		"phpstan/phpstan-doctrine": "^0.12.33",
 		"phpstan/extension-installer": "^1.1",
 		"phpstan/phpstan-nette": "^0.12.17",
-		"fakerphp/faker": "^1.14"
+		"fakerphp/faker": "^1.14",
+		"friendsofphp/php-cs-fixer": "^2.18",
+		"squizlabs/php_codesniffer": "^3.6"
 	},
 	"autoload": {
 		"psr-4": {
@@ -52,7 +54,9 @@
 	},
 	"minimum-stability": "stable",
 	"scripts": {
-		"phpstan": "phpstan analyse -c phpstan.neon -l 6 app",
-		"tester": "tester tests -s"
+		"phpstan": "phpstan analyse -c phpstan.neon -l 6 app/",
+		"tester": "tester tests -s",
+		"check-cs": "phpcs --standard=PSR12 --exclude=Generic.Files.LineLength app",
+		"fix-cs": "phpcbf --standard=PSR12 --exclude=Generic.Files.LineLength app"
 	}
 }

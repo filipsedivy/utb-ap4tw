@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Events\Customer;
 
@@ -29,7 +31,7 @@ final class CustomerSubscriber implements EventSubscriberInterface
 
     public function addCustomer(AddCustomerEvent $event): void
     {
-        $entity = new Customer;
+        $entity = new Customer();
         $entity->setName($event->getName());
         $this->entityManager->persist($entity);
     }

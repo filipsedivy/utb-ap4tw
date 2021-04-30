@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Services\User;
 
@@ -13,9 +15,10 @@ final class Authenticator implements Nette\Security\Authenticator, Nette\Securit
 
     private Nette\Security\Passwords $passwords;
 
-    public function __construct(EntityManager $entityManager,
-                                Nette\Security\Passwords $passwords)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        Nette\Security\Passwords $passwords
+    ) {
         $this->entityManager = $entityManager;
         $this->passwords = $passwords;
     }

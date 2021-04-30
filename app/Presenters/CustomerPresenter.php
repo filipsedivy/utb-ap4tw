@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Presenters;
 
@@ -17,9 +19,10 @@ final class CustomerPresenter extends AuthPresenter
 
     private FormCustomerFactory $formCustomerFactory;
 
-    public function __construct(CustomerViewFactory $customerViewFactory,
-                                FormCustomerFactory $formCustomerFactory)
-    {
+    public function __construct(
+        CustomerViewFactory $customerViewFactory,
+        FormCustomerFactory $formCustomerFactory
+    ) {
         parent::__construct();
         $this->customerViewFactory = $customerViewFactory;
         $this->formCustomerFactory = $formCustomerFactory;
