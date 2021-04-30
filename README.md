@@ -1,10 +1,6 @@
 # Project UTB / AP4TW
 
-[<img src="https://img.shields.io/badge/utb--ap4tw.herokuapp.com-open%20application-brightgreen">](https://utb-ap4tw.herokuapp.com)
-
-[![Static Analysis](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/static-analysis.yml) 
-
-[![PHP_CodeSniffer](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/code-style.yml/badge.svg)](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/code-style.yml)
+[<img src="https://img.shields.io/badge/utb--ap4tw.herokuapp.com-open%20application-brightgreen">](https://utb-ap4tw.herokuapp.com) [![Static Analysis](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/static-analysis.yml) [![PHP_CodeSniffer](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/code-style.yml/badge.svg)](https://github.com/filipsedivy/utb-ap4tw/actions/workflows/code-style.yml)
 
 ## Project description
 
