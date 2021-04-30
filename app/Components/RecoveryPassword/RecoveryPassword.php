@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\RecoveryPassword;
 
@@ -30,12 +32,13 @@ final class RecoveryPassword extends CoreControl
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(Entity\RecoveryPassword $recoveryPassword,
-                                Entity\EntityManager $entityManager,
-                                User $user,
-                                Passwords $passwords,
-                                EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        Entity\RecoveryPassword $recoveryPassword,
+        Entity\EntityManager $entityManager,
+        User $user,
+        Passwords $passwords,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->entityManager = $entityManager;
         $this->recoveryPassword = $recoveryPassword;
         $this->passwords = $passwords;

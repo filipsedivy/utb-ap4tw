@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\Profile\ChangePassword;
 
@@ -29,11 +31,12 @@ final class ChangePassword extends CoreControl
 
     private Passwords $passwords;
 
-    public function __construct(User $user,
-                                EventDispatcherInterface $eventDispatcher,
-                                EntityManager $entityManager,
-                                Passwords $passwords)
-    {
+    public function __construct(
+        User $user,
+        EventDispatcherInterface $eventDispatcher,
+        EntityManager $entityManager,
+        Passwords $passwords
+    ) {
         $this->user = $user;
         $this->eventDispatcher = $eventDispatcher;
         $this->employeeRepository = $entityManager->getEmployeeRepository();
@@ -66,7 +69,7 @@ final class ChangePassword extends CoreControl
 
     public function onSuccess(Form $form): void
     {
-        $data = $form->getValues(new FormData);
+        $data = $form->getValues(new FormData());
         assert($data instanceof FormData);
 
         $employee = $this->employeeRepository->find($this->user->id);

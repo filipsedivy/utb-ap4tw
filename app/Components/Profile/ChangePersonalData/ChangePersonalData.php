@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\Profile\ChangePersonalData;
 
@@ -23,10 +25,11 @@ final class ChangePersonalData extends CoreControl
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EntityManager $entityManager,
-                                EventDispatcherInterface $eventDispatcher,
-                                User $user)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        User $user
+    ) {
         $employeeRepository = $entityManager->getEmployeeRepository();
         $employee = $employeeRepository->find($user->id);
 
@@ -55,7 +58,7 @@ final class ChangePersonalData extends CoreControl
 
     public function processForm(Form $form): void
     {
-        $data = $form->getValues(new FormData);
+        $data = $form->getValues(new FormData());
         assert($data instanceof FormData);
 
         $event = new ChangePersonalDataEvent($this->employee->getId(), $data->name);

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Events\Note;
 
@@ -72,6 +74,6 @@ final class NoteSubscriber implements EventSubscriberInterface
         }
 
         $note->setNote($event->getNote());
-        $note->setEdited(new DateTime);
+        $note->setEdited(new DateTime());
     }
 }

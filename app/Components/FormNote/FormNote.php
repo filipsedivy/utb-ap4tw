@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\FormNote;
 
@@ -68,7 +70,7 @@ final class FormNote extends CoreControl
 
     public function processCreate(Form $form): void
     {
-        $data = $form->getValues(new FormData);
+        $data = $form->getValues(new FormData());
         assert($data instanceof FormData);
 
         $event = new AddNoteEvent($data->note);
@@ -79,7 +81,7 @@ final class FormNote extends CoreControl
 
     public function processUpdate(Form $form): void
     {
-        $data = $form->getValues(new FormData);
+        $data = $form->getValues(new FormData());
         assert($data instanceof FormData);
 
         $event = new UpdateNoteEvent($this->note->getId(), $data->note);

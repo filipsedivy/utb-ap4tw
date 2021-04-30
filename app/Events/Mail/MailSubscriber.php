@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Events\Mail;
 
@@ -30,7 +32,7 @@ final class MailSubscriber implements EventSubscriberInterface
         $message = $event->message;
         $message->setFrom('crm@development.dev');
 
-        $latte = new Engine;
+        $latte = new Engine();
         $message->setHtmlBody(
             $latte->renderToString($event->getTemplatePath(), $event->params)
         );

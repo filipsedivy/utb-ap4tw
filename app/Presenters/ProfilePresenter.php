@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Presenters;
 
@@ -15,9 +17,10 @@ final class ProfilePresenter extends AuthPresenter
 
     private ChangePersonalDataFactory $changePersonalDataFactory;
 
-    public function __construct(ChangePasswordFactory $changePasswordFactory,
-                                ChangePersonalDataFactory $changePersonalDataFactory)
-    {
+    public function __construct(
+        ChangePasswordFactory $changePasswordFactory,
+        ChangePersonalDataFactory $changePersonalDataFactory
+    ) {
         parent::__construct();
         $this->changePasswordFactory = $changePasswordFactory;
         $this->changePersonalDataFactory = $changePersonalDataFactory;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\FormCustomer;
 
@@ -36,10 +38,11 @@ final class FormCustomer extends CoreControl
 
     private ?Customer $customer;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher,
-                                EntityManager $entityManager,
-                                ?int $customerId = null)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        EntityManager $entityManager,
+        ?int $customerId = null
+    ) {
         $this->eventDispatcher = $eventDispatcher;
 
         if ($customerId !== null) {

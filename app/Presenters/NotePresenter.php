@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Presenters;
 
@@ -21,10 +23,11 @@ final class NotePresenter extends AuthPresenter
 
     private ?int $note = null;
 
-    public function __construct(ViewNoteFactory $viewNoteFactory,
-                                FormNoteFactory $formNoteFactory,
-                                EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        ViewNoteFactory $viewNoteFactory,
+        FormNoteFactory $formNoteFactory,
+        EntityManagerInterface $entityManager
+    ) {
         parent::__construct();
         $this->viewNoteFactory = $viewNoteFactory;
         $this->formNoteFactory = $formNoteFactory;

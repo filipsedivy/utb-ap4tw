@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Database\Entity;
 
@@ -62,6 +64,4 @@ class CustomerContact extends BaseEntity
     {
         $this->active = $active;
     }
-
-
 }

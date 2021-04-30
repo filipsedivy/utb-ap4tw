@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Presenters;
 
@@ -15,10 +17,11 @@ final class SignPresenter extends BasePresenter
 
     private ?Entity\RecoveryPassword $cursor = null;
 
-    public function __construct(Components\SignIn\SignInFactory $signInFactory,
-                                Components\ForgotPassword\ForgotPasswordFactory $forgotPasswordFactory,
-                                Components\RecoveryPassword\RecoveryPasswordFactory $recoveryPasswordFactory)
-    {
+    public function __construct(
+        Components\SignIn\SignInFactory $signInFactory,
+        Components\ForgotPassword\ForgotPasswordFactory $forgotPasswordFactory,
+        Components\RecoveryPassword\RecoveryPasswordFactory $recoveryPasswordFactory
+    ) {
         parent::__construct();
 
         $this->signInFactory = $signInFactory;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\FileSystem;
 
@@ -37,6 +39,5 @@ final class FileSystem extends CoreControl
         $this->template->disk = [
             'percentage' => ((int)($percentage * ($p = 10 ** 2))) / $p
         ];
-
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Components\SignIn;
 
@@ -45,7 +47,7 @@ final class SignIn extends CoreControl
 
     public function processForm(Form $form): void
     {
-        $values = $form->getValues(new FormData);
+        $values = $form->getValues(new FormData());
         assert($values instanceof FormData);
 
         try {
