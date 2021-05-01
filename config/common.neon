@@ -85,6 +85,9 @@ dbal:
 
 orm:
 	entityManagerDecoratorClass: App\Database\Entity\EntityManager
+	configuration:
+		customStringFunctions:
+			field: DoctrineExtensions\Query\Mysql\Field
 
 
 annotations:

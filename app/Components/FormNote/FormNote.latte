@@ -7,7 +7,10 @@
     <div class="card-footer">
         {input process, class => 'btn btn-success'}
         <div class="float-right">
-            <!-- Visibility -->
+            <div class="form-check">
+                <input n:name=visibility class="form-check-input">
+                <label n:name=visibility class="form-check-label">{$form['visibility']->caption}</label>
+            </div>
         </div>
     </div>
 </form>

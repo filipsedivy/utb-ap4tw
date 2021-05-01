@@ -28,8 +28,11 @@ final class FormNote extends CoreControl
 
     private ?Note $note;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, EntityManager $entityManager, ?int $id = null)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        EntityManager $entityManager,
+        ?int $id = null
+    ) {
         $this->eventDispatcher = $eventDispatcher;
 
         if ($id) {
@@ -45,46 +48,46 @@ final class FormNote extends CoreControl
         }
     }
 
+    public function beforeRender(): void
+    {
+        if ($this->note instanceof Note) {
+            $this['form']->setDefaults([
+                'note' => $this->note->note,
+                'visibility' => $this->note->public
+            ]);
+        }
+    }
+
     public function createComponentForm(): Form
     {
         $form = new Form();
 
         $form->addTextArea('note');
 
+        $form->addCheckbox('visibility', 'Veřejná poznámka');
+
         if ($this->note instanceof Note) {
             $form->addSubmit('process', 'Upravit poznámku');
-
-            $form->setDefaults([
-                'note' => $this->note->getNote()
-            ]);
-
             $form->onSuccess[] = [$this, 'processUpdate'];
         } else {
             $form->addSubmit('process', 'Uložit poznámku');
-
             $form->onSuccess[] = [$this, 'processCreate'];
         }
 
         return $form;
     }
 
-    public function processCreate(Form $form): void
+    public function processCreate(Form $form, FormData $values): void
     {
-        $data = $form->getValues(new FormData());
-        assert($data instanceof FormData);
-
-        $event = new AddNoteEvent($data->note);
+        $event = new AddNoteEvent($values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
         $this->onCreate();
     }
 
-    public function processUpdate(Form $form): void
+    public function processUpdate(Form $form, FormData $values): void
     {
-        $data = $form->getValues(new FormData());
-        assert($data instanceof FormData);
-
-        $event = new UpdateNoteEvent($this->note->getId(), $data->note);
+        $event = new UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
         $this->onEdit();

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Database\Entity\Employee;
+use Doctrine\ORM\EntityNotFoundException;
 use App\Components\Menu\{
     Menu,
     MenuFactory
 };
 use Nette\NotImplementedException;
 
+/**
+ * @property-read Employee $authEmployee
+ */
 abstract class AuthPresenter extends BasePresenter
 {
     private ?MenuFactory $menuFactoryControl = null;
@@ -38,5 +43,20 @@ abstract class AuthPresenter extends BasePresenter
         }
 
         parent::checkRequirements($element);
+    }
+
+    final public function getAuthEmployee(): Employee
+    {
+        if (!$this->user->loggedIn) {
+            throw new \LogicException('User is not logged');
+        }
+
+        $entity = $this->entityManager->getEmployeeRepository()->find($this->user->id);
+
+        if (!$entity instanceof Employee) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [(string)$this->user->id]);
+        }
+
+        return $entity;
     }
 }

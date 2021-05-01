@@ -7,4 +7,6 @@ namespace App\Components\FormNote;
 final class FormData
 {
     public string $note;
+
+    public bool $visibility;
 }

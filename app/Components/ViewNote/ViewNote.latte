@@ -1,15 +1,18 @@
+{varType App\Database\Entity\Note $note}
+
 <div class="note">
     <div class="note-header">
         <span class="note-author">{$note->getCreator()->getName()}</span>
 
         <span class="float-right">
-            {if $note->getEdited()}
-                <span class="clock edited" data-toggle="tooltip" title="Vytvořeno: {$note->getCreated()|date:'d. m. Y H:m'}">
-                <i class="fas fa-fw fa-pen"></i>
-                {$note->getEdited()|date:'d. m. Y H:m'}
-            </span>
-        {else}
-            <span class="clock">{$note->getCreated()|date:'d. m. Y H:m'}</span>
+            {if $note->isEdited()}
+                <span class="clock edited" data-toggle="tooltip"
+                      title="Vytvořeno: {$note->getCreated()|date:'d. m. Y H:i'}">
+                    <i class="fas fa-fw fa-pen"></i>
+                    {$note->getEdited()|date:'d. m. Y H:i'}
+                </span>
+            {else}
+                <span class="clock">{$note->getCreated()|date:'d. m. Y H:i'}</span>
             {/if}
         </span>
     </div>
@@ -20,7 +23,7 @@
         {$note->getNote()|noescape}
     </div>
 
-    <div class="note-footer">
+    <div class="note-footer" n:if="$showFooter">
         <a href="{plink Note:edit, id => $note->getId()}"><i class="fas fa-fw fa-pen"></i></a>
         <a n:href="Delete!, id => $note->getId()" onClick="return confirm('Opravdu chcete poznámku smazat?');">
             <i class="fas fa-fw fa-trash-alt"></i>

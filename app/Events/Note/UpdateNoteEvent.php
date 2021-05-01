@@ -10,10 +10,13 @@ final class UpdateNoteEvent
 
     private string $note;
 
-    public function __construct(int $id, string $note)
+    private ?bool $visibility;
+
+    public function __construct(int $id, string $note, ?bool $visibility = null)
     {
         $this->id = $id;
         $this->note = $note;
+        $this->visibility = $visibility;
     }
 
     public function getId(): int
@@ -24,5 +27,10 @@ final class UpdateNoteEvent
     public function getNote(): string
     {
         return $this->note;
+    }
+
+    public function getVisibility(): ?bool
+    {
+        return $this->visibility;
     }
 }
