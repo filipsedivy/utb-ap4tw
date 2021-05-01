@@ -18,8 +18,10 @@ final class NoteSubscriber implements EventSubscriberInterface
 
     private User $user;
 
-    public function __construct(EntityManager $entityManager, User $user)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        User $user
+    ) {
         $this->entityManager = $entityManager;
         $this->user = $user;
     }
@@ -49,6 +51,10 @@ final class NoteSubscriber implements EventSubscriberInterface
 
         $note->setCreator($employee);
 
+        if ($event->getVisibility() !== null) {
+            $note->setPrivate(!$event->getVisibility());
+        }
+
         $this->entityManager->persist($note);
     }
 
@@ -75,5 +81,9 @@ final class NoteSubscriber implements EventSubscriberInterface
 
         $note->setNote($event->getNote());
         $note->setEdited(new DateTime());
+
+        if ($event->getVisibility() !== null) {
+            $note->setPrivate(!$event->getVisibility());
+        }
     }
 }

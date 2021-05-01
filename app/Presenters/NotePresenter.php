@@ -21,7 +21,7 @@ final class NotePresenter extends AuthPresenter
 
     private NoteRepository $noteRepository;
 
-    private ?int $note = null;
+    private ?Note $cursor = null;
 
     public function __construct(
         ViewNoteFactory $viewNoteFactory,
@@ -37,13 +37,13 @@ final class NotePresenter extends AuthPresenter
         $this->noteRepository = $noteRepository;
     }
 
-    public function actionDefault(): void
+    public function renderDefault(): void
     {
         $this->getPageInfo()->title = 'Poznámky';
-        $this->template->notes = $this->entityManager->getNoteRepository()->getAccessibleNotes();
+        $this->template->notes = $this->entityManager->getNoteRepository()->getAccessibleNotes($this->authEmployee);
     }
 
-    public function actionAdd(): void
+    public function renderAdd(): void
     {
         $this->getPageInfo()->title = 'Přidat poznámku';
         $this->getPageInfo()->backlink = $this->link('Note:');
@@ -53,17 +53,26 @@ final class NotePresenter extends AuthPresenter
     {
         $entity = $this->noteRepository->find($id);
         if (!$entity instanceof Note) {
-            $this->error('Note not found', Http\IResponse::S403_FORBIDDEN);
+            $this->error('Note not found');
         }
 
+        if ($entity->getCreator()->id !== $this->authEmployee->id) {
+            $this->error('You dont have access to edit', Http\IResponse::S403_FORBIDDEN);
+        }
+
+        $this->cursor = $entity;
+    }
+
+    public function renderEdit(): void
+    {
         $this->getPageInfo()->title = 'Upravit poznámku';
         $this->getPageInfo()->backlink = $this->link('Note:');
-        $this->note = $id;
     }
 
     public function createComponentFormNote(): FormNote
     {
-        $control = $this->formNoteFactory->create($this->note);
+        $note = $this->cursor instanceof Note ? $this->cursor->id : null;
+        $control = $this->formNoteFactory->create($note);
         $control->onCreate[] = function () {
             $this->entityManager->flush();
             $this->flashMessage('Poznámka byla úspěšně uložena', 'success');

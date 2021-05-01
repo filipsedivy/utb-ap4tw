@@ -12,10 +12,16 @@ final class AddNoteEvent
 
     private ?Employee $employee;
 
-    public function __construct(string $note, ?Employee $employee = null)
-    {
+    private ?bool $visibility;
+
+    public function __construct(
+        string $note,
+        ?bool $visibility = null,
+        ?Employee $employee = null
+    ) {
         $this->note = $note;
         $this->employee = $employee;
+        $this->visibility = $visibility;
     }
 
     public function getNote(): string
@@ -26,5 +32,10 @@ final class AddNoteEvent
     public function getEmployee(): ?Employee
     {
         return $this->employee;
+    }
+
+    public function getVisibility(): ?bool
+    {
+        return $this->visibility;
     }
 }

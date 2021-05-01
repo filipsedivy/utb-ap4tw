@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\NoteRepository")
  * @ORM\Table(name="note")
+ * @property-read string $note
+ * @property-read bool $private
+ * @property-read bool $public
  */
 class Note extends BaseEntity
 {
@@ -35,14 +38,14 @@ class Note extends BaseEntity
     private DateTime $created;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private ?DateTime $edited;
+    private DateTime $edited;
 
     public function __construct()
     {
         $this->created = new DateTime();
-        $this->edited = null;
+        $this->edited = new DateTime();
         $this->private = false;
     }
 
@@ -76,13 +79,33 @@ class Note extends BaseEntity
         $this->created = $created;
     }
 
-    public function getEdited(): ?DateTime
+    public function getEdited(): DateTime
     {
         return $this->edited;
     }
 
-    public function setEdited(?DateTime $edited): void
+    public function setEdited(DateTime $edited): void
     {
         $this->edited = $edited;
+    }
+
+    public function isEdited(): bool
+    {
+        return $this->edited != $this->created;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->private;
+    }
+
+    public function isPublic(): bool
+    {
+        return !$this->private;
+    }
+
+    public function setPrivate(bool $private): void
+    {
+        $this->private = $private;
     }
 }
