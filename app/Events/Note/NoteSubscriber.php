@@ -26,9 +26,7 @@ final class NoteSubscriber implements EventSubscriberInterface
         $this->user = $user;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -85,8 +83,10 @@ final class NoteSubscriber implements EventSubscriberInterface
 
         $note->setEdited(new DateTime());
 
-        if ($event->getVisibility() !== null) {
-            $note->setPrivate(!$event->getVisibility());
+        if ($event->getVisibility() === null) {
+            return;
         }
+
+        $note->setPrivate(!$event->getVisibility());
     }
 }

@@ -6,7 +6,6 @@ namespace App\Database\Fixtures;
 
 use App\Database\Entity\Customer;
 use App\Database\Entity\Employee;
-use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;

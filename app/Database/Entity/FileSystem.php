@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Database\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\FileSystemRepository")
  * @ORM\Table(name="file_system")
+ *
  * @property-read int $size
  * @property-read string $path
  * @property-read string $contentType
@@ -18,19 +19,13 @@ use Nette\Utils;
  */
 class FileSystem extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     */
+    /** @ORM\Column(type="integer", options={"unsigned": true}) */
     private int $size;
 
-    /**
-     * @ORM\Column(type="string", length=500)
-     */
+    /** @ORM\Column(type="string", length=500) */
     private string $path;
 
-    /**
-     * @ORM\Column(type="string", options={"default": "application/octet-stream"})
-     */
+    /** @ORM\Column(type="string", options={"default": "application/octet-stream"}) */
     private string $contentType = 'application/octet-stream';
 
     /**
@@ -39,9 +34,7 @@ class FileSystem extends BaseEntity
     */
     private Employee $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-    */
+    /** @ORM\Column(type="datetime") */
     private \DateTime $createdAt;
 
     public function __construct()

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use App\Core\Configurator;
-use Tracy\Debugger;
 
 class Bootstrap
 {

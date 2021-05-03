@@ -64,9 +64,11 @@ final class Form extends Core\UI\CoreControl
 
             if ($this->customer->isArchived()) {
                 foreach ($form->getControls() as $input) {
-                    if ($input instanceof Forms\Controls\TextBase) {
-                        $input->setHtmlAttribute('readonly');
+                    if (!($input instanceof Forms\Controls\TextBase)) {
+                        continue;
                     }
+
+                    $input->setHtmlAttribute('readonly');
                 }
 
                 $this->template->isArchived = true;
@@ -84,9 +86,11 @@ final class Form extends Core\UI\CoreControl
             ->setRequired('%label musí být zadáné');
 
         $form->onValidate[] = function () {
-            if ($this->customer !== null && $this->customer->isArchived()) {
-                $this->error('Note is archived', Http\IResponse::S403_FORBIDDEN);
+            if ($this->customer === null || !$this->customer->isArchived()) {
+                return;
             }
+
+            $this->error('Note is archived', Http\IResponse::S403_FORBIDDEN);
         };
 
         if ($this->customer instanceof Entity\Customer) {

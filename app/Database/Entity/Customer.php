@@ -16,14 +16,10 @@ use Nette\Utils;
  */
 class Customer extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private bool $archived;
 
     /**
@@ -34,9 +30,7 @@ class Customer extends BaseEntity
      */
     private Collection $contacts;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="datetime") */
     private DateTime $createdAt;
 
     public function __construct()

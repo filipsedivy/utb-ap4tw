@@ -33,7 +33,7 @@ final class FileSystem extends CoreControl
 
         $usageSpace = $this->repository->getUsageByUser($employee);
         $freeSpace = $employee->diskSpace - $usageSpace;
-        $percentage = ($usageSpace / $employee->diskSpace) * 100;
+        $percentage = $usageSpace / $employee->diskSpace * 100;
 
 
         $this->template->disk = [
