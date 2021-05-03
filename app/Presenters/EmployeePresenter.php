@@ -40,11 +40,8 @@ final class EmployeePresenter extends AuthPresenter
 
     public function actionEdit(int $id): void
     {
-        $entity = $this->repository->find($id);
-
-        if (!$entity instanceof Database\Entity\Employee) {
-            $this->error('Employee not found');
-        }
+        $entity = $this->checkOneById(Database\Entity\Employee::class, $id);
+        assert($entity instanceof Database\Entity\Employee);
 
         $this->cursor = $entity;
     }

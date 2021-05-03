@@ -32,9 +32,10 @@ final class NotePresenter extends AuthPresenter
         $this->viewNoteFactory = $viewNoteFactory;
         $this->formNoteFactory = $formNoteFactory;
 
-        $noteRepository = $entityManager->getRepository(Note::class);
-        assert($noteRepository instanceof NoteRepository);
-        $this->noteRepository = $noteRepository;
+        $repository = $entityManager->getRepository(Note::class);
+        assert($repository instanceof NoteRepository);
+
+        $this->noteRepository = $repository;
     }
 
     public function renderDefault(): void
@@ -51,10 +52,8 @@ final class NotePresenter extends AuthPresenter
 
     public function actionEdit(int $id): void
     {
-        $entity = $this->noteRepository->find($id);
-        if (!$entity instanceof Note) {
-            $this->error('Note not found');
-        }
+        $entity = $this->checkOneById(Note::class, $id);
+        assert($entity instanceof Note);
 
         if ($entity->getCreator()->id !== $this->authEmployee->id) {
             $this->error('You dont have access to edit', Http\IResponse::S403_FORBIDDEN);
@@ -91,10 +90,8 @@ final class NotePresenter extends AuthPresenter
     public function createComponentNote(): Multiplier
     {
         return new Multiplier(function (string $id) {
-            $note = $this->entityManager->getNoteRepository()->findOneBy(['id' => $id]);
-            if (!$note instanceof Note) {
-                $this->error('Note not found', Http\IResponse::S403_FORBIDDEN);
-            }
+            $note = $this->checkOneById(Note::class, (int)$id);
+            assert($note instanceof Note);
 
             $control = $this->viewNoteFactory->create($note);
 
