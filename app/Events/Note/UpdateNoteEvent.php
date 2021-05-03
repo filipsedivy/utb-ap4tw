@@ -8,11 +8,11 @@ final class UpdateNoteEvent
 {
     private int $id;
 
-    private string $note;
+    private ?string $note;
 
     private ?bool $visibility;
 
-    public function __construct(int $id, string $note, ?bool $visibility = null)
+    public function __construct(int $id, ?string $note = null, ?bool $visibility = null)
     {
         $this->id = $id;
         $this->note = $note;
@@ -24,7 +24,7 @@ final class UpdateNoteEvent
         return $this->id;
     }
 
-    public function getNote(): string
+    public function getNote(): ?string
     {
         return $this->note;
     }

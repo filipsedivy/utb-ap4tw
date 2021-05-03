@@ -9,6 +9,7 @@ use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
 use App\Events\Note\DeleteNoteEvent;
+use App\Events\Note\UpdateNoteEvent;
 use Doctrine\ORM\EntityNotFoundException;
 use Nette\Security\User;
 use Nette\Utils\Arrays;
@@ -18,6 +19,9 @@ final class ViewNote extends CoreControl
 {
     /** @var array<callable(): void> */
     public array $onDelete = [];
+
+    /** @var array<callable(Note, bool): void> */
+    public array $onChangeVisibility = [];
 
     private Note $note;
 
@@ -45,15 +49,24 @@ final class ViewNote extends CoreControl
         $this->template->showFooter = $this->employee->id === $this->note->getCreator()->id;
     }
 
-    public function handleDelete(int $id): void
+    public function handleDelete(): void
     {
-        $event = new DeleteNoteEvent($id);
+        $event = new DeleteNoteEvent($this->note->id);
+        $this->eventDispatcher->dispatch($event);
+        Arrays::invoke($this->onDelete);
+    }
 
-        try {
-            $this->eventDispatcher->dispatch($event);
-            Arrays::invoke($this->onDelete);
-        } catch (EntityNotFoundException $exception) {
-            $this->error('Entity not found');
-        }
+    public function handlePrivate(): void
+    {
+        $event = new UpdateNoteEvent($this->note->id, null, false);
+        $this->eventDispatcher->dispatch($event);
+        Arrays::invoke($this->onChangeVisibility, $this->note, false);
+    }
+
+    public function handlePublic(): void
+    {
+        $event = new UpdateNoteEvent($this->note->id, null, true);
+        $this->eventDispatcher->dispatch($event);
+        Arrays::invoke($this->onChangeVisibility, $this->note, true);
     }
 }

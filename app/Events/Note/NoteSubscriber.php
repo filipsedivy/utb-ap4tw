@@ -79,7 +79,10 @@ final class NoteSubscriber implements EventSubscriberInterface
             throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
         }
 
-        $note->setNote($event->getNote());
+        if ($event->getNote() !== null) {
+            $note->setNote($event->getNote());
+        }
+
         $note->setEdited(new DateTime());
 
         if ($event->getVisibility() !== null) {

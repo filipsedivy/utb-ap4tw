@@ -24,8 +24,18 @@
     </div>
 
     <div class="note-footer" n:if="$showFooter">
+        {if $note->isPublic()}
+            <a n:href="Private!"
+                    title="Nastavit jako neveřejnou poznámku"
+                    data-toggle="tooltip"><i class="fas fa-fw fa-eye"></i></a>
+        {else}
+            <a n:href="Public!"
+               title="Nastavit jako veřejnou poznámku"
+               data-toggle="tooltip"><i class="fas fa-fw fa-eye-slash"></i></a>
+        {/if}
+
         <a href="{plink Note:edit, id => $note->getId()}"><i class="fas fa-fw fa-pen"></i></a>
-        <a n:href="Delete!, id => $note->getId()" onClick="return confirm('Opravdu chcete poznámku smazat?');">
+        <a n:href="Delete!" onClick="return confirm('Opravdu chcete poznámku smazat?');">
             <i class="fas fa-fw fa-trash-alt"></i>
         </a>
     </div>
