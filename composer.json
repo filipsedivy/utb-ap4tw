@@ -39,7 +39,7 @@
 		"symfony/thanks": "^1",
 		"timeweb/phpstan-enum": "^2.2",
 		"mockery/mockery": "^1.0",
-		"heroku/heroku-buildpack-php": "^190.0",
+		"heroku/heroku-buildpack-php": "^191",
 		"phpstan/phpstan": "^0.12.85",
 		"phpstan/phpstan-doctrine": "^0.12.33",
 		"phpstan/extension-installer": "^1.1",
