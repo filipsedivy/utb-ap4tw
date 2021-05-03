@@ -8,13 +8,11 @@ use App\Core\UI\CoreControl;
 use Nette\Application\UI\Form;
 use Nette\Security\AuthenticationException;
 use Nette\Security\User;
+use Nette\Utils\Arrays;
 
-/**
- * @method void onSuccess()
- */
 final class SignIn extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onSuccess = [];
 
     private User $user;
@@ -52,7 +50,7 @@ final class SignIn extends CoreControl
 
         try {
             $this->user->login($values->username, $values->password);
-            $this->onSuccess();
+            Arrays::invoke($this->onSuccess);
         } catch (AuthenticationException $exception) {
             $form->addError('Jméno nebo heslo není správně zadané', false);
             return;

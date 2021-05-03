@@ -10,14 +10,12 @@ use App\Database\Entity\EntityManager;
 use App\Database\Repository\EmployeeRepository;
 use App\Events\RecoveryPassword\SendRecoveryLinkEvent;
 use Nette\Application\UI\Form;
+use Nette\Utils\Arrays;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onSuccess()
- */
 final class ForgotPassword extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onSuccess = [];
 
     private EventDispatcherInterface $eventDispatcher;
@@ -52,6 +50,6 @@ final class ForgotPassword extends CoreControl
             $this->eventDispatcher->dispatch($event);
         }
 
-        $this->onSuccess();
+        Arrays::invoke($this->onSuccess);
     }
 }
