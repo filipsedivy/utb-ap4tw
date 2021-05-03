@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\NoteRepository")
@@ -16,96 +15,98 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Note extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="text")
-     */
-    private string $note;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
-     */
-    private Employee $creator;
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	private string $note;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $private;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Employee")
+	 * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+	 */
+	private Employee $creator;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $created;
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private bool $private;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $edited;
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private DateTime $created;
 
-    public function __construct()
-    {
-        $this->created = new DateTime();
-        $this->edited = new DateTime();
-        $this->private = false;
-    }
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private DateTime $edited;
 
-    public function getNote(): string
-    {
-        return $this->note;
-    }
+	public function __construct()
+	{
+	 $this->created = new DateTime;
+	 $this->edited = new DateTime;
+	 $this->private = false;
+	}
 
-    public function setNote(string $note): void
-    {
-        $this->note = $note;
-    }
+	public function getNote(): string
+	{
+	 return $this->note;
+	}
 
-    public function getCreator(): Employee
-    {
-        return $this->creator;
-    }
+	public function setNote(string $note): void
+	{
+	 $this->note = $note;
+	}
 
-    public function setCreator(Employee $creator): void
-    {
-        $this->creator = $creator;
-    }
+	public function getCreator(): Employee
+	{
+	 return $this->creator;
+	}
 
-    public function getCreated(): DateTime
-    {
-        return $this->created;
-    }
+	public function setCreator(Employee $creator): void
+	{
+	 $this->creator = $creator;
+	}
 
-    public function setCreated(DateTime $created): void
-    {
-        $this->created = $created;
-    }
+	public function getCreated(): DateTime
+	{
+	 return $this->created;
+	}
 
-    public function getEdited(): DateTime
-    {
-        return $this->edited;
-    }
+	public function setCreated(DateTime $created): void
+	{
+	 $this->created = $created;
+	}
 
-    public function setEdited(DateTime $edited): void
-    {
-        $this->edited = $edited;
-    }
+	public function getEdited(): DateTime
+	{
+	 return $this->edited;
+	}
 
-    public function isEdited(): bool
-    {
-        return $this->edited != $this->created;
-    }
+	public function setEdited(DateTime $edited): void
+	{
+	 $this->edited = $edited;
+	}
 
-    public function isPrivate(): bool
-    {
-        return $this->private;
-    }
+	public function isEdited(): bool
+	{
+	 return $this->edited !== $this->created;
+	}
 
-    public function isPublic(): bool
-    {
-        return !$this->private;
-    }
+	public function isPrivate(): bool
+	{
+	 return $this->private;
+	}
 
-    public function setPrivate(bool $private): void
-    {
-        $this->private = $private;
-    }
+	public function isPublic(): bool
+	{
+	 return !$this->private;
+	}
+
+	public function setPrivate(bool $private): void
+	{
+	 $this->private = $private;
+	}
+
 }

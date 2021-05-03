@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
@@ -12,15 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ContactType
 {
+
     /**
      * @ORM\Column(type="string", length=10, nullable=false)
      * @ORM\Id()
      */
     private string $key;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $display;
 
     public function getKey(): string
@@ -42,4 +39,5 @@ class ContactType
     {
         $this->display = $display;
     }
+
 }

@@ -1,95 +1,103 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\Note\Form;
 
+use App\Core;
 use App\Database\Entity;
 use App\Events\Note;
-use App\Core;
-use Doctrine\ORM;
 use Nette\Application\UI;
 use Nette\Utils;
 use Symfony\Component\EventDispatcher;
+use App\Components\Note\Form\EntityNotFoundException;
 
 final class Form extends Core\UI\CoreControl
 {
-    /** @var array<callable(): void> */
-    public array $onCreate = [];
 
-    /** @var array<callable(): void> */
-    public array $onEdit = [];
+	/**
+     * @var array<callable(): void>
+     */
+	public array $onCreate = [];
 
-    private EventDispatcher\EventDispatcherInterface $eventDispatcher;
+	/**
+     * @var array<callable(): void>
+     */
+	public array $onEdit = [];
 
-    private ?Entity\Note $note;
+	private EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(
-        EventDispatcher\EventDispatcherInterface $eventDispatcher,
-        Entity\EntityManager $entityManager,
-        ?int $id = null
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
+	private ?Entity\Note $note;
 
-        if ($id) {
-            $note = $entityManager->getNoteRepository()->find($id);
+	public function __construct(
+	EventDispatcher\EventDispatcherInterface $eventDispatcher,
+	Entity\EntityManager $entityManager,
+	?int $id = null
+	) {
+		$this->eventDispatcher = $eventDispatcher;
 
-            if (!$note instanceof Entity\Note) {
-                $this->error('Note not found');
-            }
+		if ($id) {
+			$note = $entityManager->getNoteRepository()->find($id);
 
-            $this->note = $note;
-        } else {
-            $this->note = null;
-        }
-    }
+			if (!$note instanceof Entity\Note) {
+				$this->error('Note not found');
+			}
 
-    public function beforeRender(): void
-    {
-        if ($this->note instanceof Entity\Note) {
-            $this['form']->setDefaults([
-                'note' => $this->note->note,
-                'visibility' => $this->note->public
-            ]);
-        }
-    }
+			$this->note = $note;
+		} else {
+			$this->note = null;
+		}
+	}
 
-    public function createComponentForm(): UI\Form
-    {
-        $form = new UI\Form();
+	public function beforeRender(): void
+	{
+		if (!($this->note instanceof Entity\Note)) {
+			return;
+		}
 
-        $form->addTextArea('note');
+		$this['form']->setDefaults([
+		'note' => $this->note->note,
+		'visibility' => $this->note->public,
+		]);
+	}
 
-        $form->addCheckbox('visibility', 'Veřejná poznámka');
+	public function createComponentForm(): UI\Form
+	{
+		$form = new UI\Form();
 
-        if ($this->note instanceof Entity\Note) {
-            $form->addSubmit('process', 'Upravit poznámku');
-            $form->onSuccess[] = [$this, 'processUpdate'];
-        } else {
-            $form->addSubmit('process', 'Uložit poznámku');
-            $form->onSuccess[] = [$this, 'processCreate'];
-        }
+		$form->addTextArea('note');
 
-        return $form;
-    }
+		$form->addCheckbox('visibility', 'Veřejná poznámka');
 
-    public function processCreate(UI\Form $form, Data $values): void
-    {
-        $event = new Note\AddNoteEvent($values->note, $values->visibility);
-        $this->eventDispatcher->dispatch($event);
+		if ($this->note instanceof Entity\Note) {
+			$form->addSubmit('process', 'Upravit poznámku');
+			$form->onSuccess[] = [$this, 'processUpdate'];
+		} else {
+			$form->addSubmit('process', 'Uložit poznámku');
+			$form->onSuccess[] = [$this, 'processCreate'];
+		}
 
-        Utils\Arrays::invoke($this->onCreate);
-    }
+		return $form;
+	}
 
-    public function processUpdate(UI\Form $form, Data $values): void
-    {
-        if (!$this->note instanceof Entity\Note) {
-            throw ORM\EntityNotFoundException::fromClassNameAndIdentifier(Entity\Note::class, []);
-        }
+	public function processCreate(UI\Form $form, Data $values): void
+	{
+		$event = new Note\AddNoteEvent($values->note, $values->visibility);
+		$this->eventDispatcher->dispatch($event);
 
-        $event = new Note\UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
-        $this->eventDispatcher->dispatch($event);
+		Utils\Arrays::invoke($this->onCreate);
+	}
 
-        Utils\Arrays::invoke($this->onEdit);
-    }
+	public function processUpdate(UI\Form $form, Data $values): void
+	{
+		if (!$this->note instanceof Entity\Note) {
+			throw EntityNotFoundException::fromClassNameAndIdentifier(Entity\Note::class, []);
+		}
+
+		$event = new Note\UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
+		$this->eventDispatcher->dispatch($event);
+
+		Utils\Arrays::invoke($this->onEdit);
+	}
+
 }

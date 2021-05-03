@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 use Nette\Utils;
 
 /**
@@ -13,84 +13,86 @@ use Nette\Utils;
  * @property-read int $size
  * @property-read string $path
  * @property-read string $contentType
- * @property-read Employee $user
- * @property-read Utils\DateTime $createdAt;
+ * @property-read \App\Database\Entity\Employee $user
+ * @property-read \Nette\Utils\DateTime $createdAt ;
  */
 class FileSystem extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     */
-    private int $size;
 
-    /**
-     * @ORM\Column(type="string", length=500)
-     */
-    private string $path;
+	/**
+	 * @ORM\Column(type="integer", options={"unsigned": true})
+	 */
+	private int $size;
 
-    /**
-     * @ORM\Column(type="string", options={"default": "application/octet-stream"})
-     */
-    private string $contentType = 'application/octet-stream';
+	/**
+	 * @ORM\Column(type="string", length=500)
+	 */
+	private string $path;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumn(name="employee_id")
-    */
-    private Employee $user;
+	/**
+	 * @ORM\Column(type="string", options={"default": "application/octet-stream"})
+	 */
+	private string $contentType = 'application/octet-stream';
 
-    /**
-     * @ORM\Column(type="datetime")
-    */
-    private \DateTime $createdAt;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Employee")
+	 * @ORM\JoinColumn(name="employee_id")
+	*/
+	private Employee $user;
 
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
-    }
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private DateTime $createdAt;
 
-    public function getSize(): int
-    {
-        return $this->size;
-    }
+	public function __construct()
+	{
+	 $this->createdAt = new DateTime();
+	}
 
-    public function setSize(int $size): void
-    {
-        $this->size = $size;
-    }
+	public function getSize(): int
+	{
+	 return $this->size;
+	}
 
-    public function getPath(): string
-    {
-        return $this->path;
-    }
+	public function setSize(int $size): void
+	{
+	 $this->size = $size;
+	}
 
-    public function setPath(string $path): void
-    {
-        $this->path = $path;
-    }
+	public function getPath(): string
+	{
+	 return $this->path;
+	}
 
-    public function getContentType(): string
-    {
-        return $this->contentType;
-    }
+	public function setPath(string $path): void
+	{
+	 $this->path = $path;
+	}
 
-    public function setContentType(string $contentType): void
-    {
-        $this->contentType = $contentType;
-    }
+	public function getContentType(): string
+	{
+	 return $this->contentType;
+	}
 
-    public function getUser(): Employee
-    {
-        return $this->user;
-    }
+	public function setContentType(string $contentType): void
+	{
+	 $this->contentType = $contentType;
+	}
 
-    public function setUser(Employee $user): void
-    {
-        $this->user = $user;
-    }
+	public function getUser(): Employee
+	{
+	 return $this->user;
+	}
 
-    public function getCreatedAt(): Utils\DateTime
-    {
-        return Utils\DateTime::from($this->createdAt);
-    }
+	public function setUser(Employee $user): void
+	{
+	 $this->user = $user;
+	}
+
+	public function getCreatedAt(): Utils\DateTime
+	{
+	 return Utils\DateTime::from($this->createdAt);
+	}
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\Note\View;
 
@@ -13,10 +13,13 @@ use Symfony\Component\EventDispatcher;
 
 final class View extends Core\UI\CoreControl
 {
-    /** @var array<callable(): void> */
+
+    /**
+     * @var array<callable(): void>
+     */
     public array $onDelete = [];
 
-    /** @var array<callable(Entity\Note, bool): void> */
+    /** @var array<callable(\App\Database\Entity\Note , bool ): void> */
     public array $onChangeVisibility = [];
 
     private Entity\Note $note;
@@ -35,7 +38,7 @@ final class View extends Core\UI\CoreControl
         $this->eventDispatcher = $eventDispatcher;
 
         $employee = $entityManager->getEmployeeRepository()->find($user->id);
-        assert($employee instanceof Entity\Employee);
+        \assert($employee instanceof Entity\Employee);
         $this->employee = $employee;
     }
 
@@ -65,4 +68,5 @@ final class View extends Core\UI\CoreControl
         $this->eventDispatcher->dispatch($event);
         Utils\Arrays::invoke($this->onChangeVisibility, $this->note, true);
     }
+
 }

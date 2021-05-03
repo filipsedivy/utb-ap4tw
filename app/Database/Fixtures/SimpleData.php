@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Fixtures;
 
 use App\Database\Entity\Customer;
 use App\Database\Entity\Employee;
-use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -14,84 +13,87 @@ use Faker;
 use Nette\DI\Container;
 use Nette\Security\Passwords;
 use Nettrine\Fixtures\ContainerAwareInterface;
+use function assert;
 
 class SimpleData implements FixtureInterface, ContainerAwareInterface
 {
-    private const SIMPLE_PASSWORD = 'demo';
 
-    private Container $container;
+	private const SIMPLE_PASSWORD = 'demo';
 
-    private Passwords $passwords;
+	private Container $container;
 
-    private ObjectManager $objectManager;
+	private Passwords $passwords;
 
-    private Faker\Generator $faker;
+	private ObjectManager $objectManager;
 
-    public function setContainer(Container $container): void
-    {
-        $this->container = $container;
+	private Faker\Generator $faker;
 
-        $passwords = $container->getByType(Passwords::class);
-        assert($passwords instanceof Passwords);
-        $this->passwords = $passwords;
+	public function setContainer(Container $container): void
+	{
+		$this->container = $container;
 
-        $this->faker = Faker\Factory::create('cs_CZ');
-        $this->faker->seed();
-    }
+		$passwords = $container->getByType(Passwords::class);
+		\assert($passwords instanceof Passwords);
+		$this->passwords = $passwords;
 
-    public function load(ObjectManager $manager): void
-    {
-        $this->objectManager = $manager;
-        $this->createSimpleEmployees();
-        $this->createSimpleCustomers();
-        $this->createSimpleNotes();
-        $manager->flush();
-    }
+		$this->faker = Faker\Factory::create('cs_CZ');
+		$this->faker->seed();
+	}
 
-    private function createSimpleEmployees(): void
-    {
-        for ($i = 0; $i < 10; $i++) {
-            $password = $this->passwords->hash(self::SIMPLE_PASSWORD);
+	public function load(ObjectManager $manager): void
+	{
+		$this->objectManager = $manager;
+		$this->createSimpleEmployees();
+		$this->createSimpleCustomers();
+		$this->createSimpleNotes();
+		$manager->flush();
+	}
 
-            $employee = new Employee();
-            $employee->setEmail($this->faker->freeEmail);
-            $employee->setPassword($password);
-            $employee->setName($this->faker->name);
-            $employee->setUsername($this->faker->userName);
-            $this->objectManager->persist($employee);
-        }
+	private function createSimpleEmployees(): void
+	{
+		for ($i = 0; $i < 10; $i++) {
+			$password = $this->passwords->hash(self::SIMPLE_PASSWORD);
 
-        $this->objectManager->flush();
-    }
+			$employee = new Employee;
+			$employee->setEmail($this->faker->freeEmail);
+			$employee->setPassword($password);
+			$employee->setName($this->faker->name);
+			$employee->setUsername($this->faker->userName);
+			$this->objectManager->persist($employee);
+		}
 
-    private function createSimpleCustomers(): void
-    {
-        for ($i = 0; $i < 20; $i++) {
-            $customer = new Customer();
+		$this->objectManager->flush();
+	}
 
-            if ($i % 2 === 0) {
-                $customer->setName($this->faker->company);
-            } else {
-                $customer->setName($this->faker->name);
-            }
+	private function createSimpleCustomers(): void
+	{
+		for ($i = 0; $i < 20; $i++) {
+			$customer = new Customer();
 
-            $this->objectManager->persist($customer);
-        }
-    }
+			if (0 === $i % 2) {
+				$customer->setName($this->faker->company);
+			} else {
+				$customer->setName($this->faker->name);
+			}
 
-    private function createSimpleNotes(): void
-    {
-        $employees = $this->objectManager->getRepository(Employee::class)->findAll();
+			$this->objectManager->persist($customer);
+		}
+	}
 
-        for ($i = 0; $i < 20; $i++) {
-            $employee = $employees[array_rand($employees)];
-            assert($employee instanceof Employee);
+	private function createSimpleNotes(): void
+	{
+		$employees = $this->objectManager->getRepository(Employee::class)->findAll();
 
-            $note = new Note();
-            $note->setCreator($employee);
-            $note->setNote($this->faker->paragraph());
+		for ($i = 0; $i < 20; $i++) {
+			$employee = $employees[\array_rand($employees)];
+			assert($employee instanceof Employee);
 
-            $this->objectManager->persist($note);
-        }
-    }
+			$note = new Note;
+			$note->setCreator($employee);
+			$note->setNote($this->faker->paragraph());
+
+			$this->objectManager->persist($note);
+		}
+	}
+
 }

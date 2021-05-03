@@ -1,64 +1,62 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\Mail;
 
+use App\Events\Mail\LogicException;
 use Nette;
+use function file_exists;
 
 /**
  * @property-read string $templatePath
  * @property-read array $params
- * @property-read Nette\Mail\Message $message
+ * @property-read \Nette\Mail\Message $message
  */
 final class SendEmailTemplateEvent
 {
-    use Nette\SmartObject;
 
-    private string $templatePath;
+	use Nette\SmartObject;
 
-    /** @var array<mixed, mixed> */
-    private array $params;
+	private string $templatePath;
 
-    private Nette\Mail\Message $message;
+	/** @var array<mixed, mixed> */
+	private array $params;
 
-    /**
-     * @param array<mixed, mixed> $params
-     */
-    public function __construct(Nette\Mail\Message $message, string $templatePath, array $params = [])
-    {
-        $this->templatePath = $templatePath;
-        $this->params = $params;
-        $this->message = $message;
-    }
+	private Nette\Mail\Message $message;
 
-    /**
-     * @param mixed $value
-     */
-    public function addParam(string $key, $value): void
-    {
-        $this->params[$key] = $value;
-    }
+	/** @param array<mixed, mixed> $params */
+	public function __construct(Nette\Mail\Message $message, string $templatePath, array $params = [])
+	{
+		$this->templatePath = $templatePath;
+		$this->params = $params;
+		$this->message = $message;
+	}
 
-    /**
-     * @return array<mixed, mixed>
-     */
-    public function getParams(): array
-    {
-        return $this->params;
-    }
+	/** @param mixed $value */
+	public function addParam(string $key, $value): void
+	{
+		$this->params[$key] = $value;
+	}
 
-    public function getTemplatePath(): string
-    {
-        if (!file_exists($this->templatePath)) {
-            throw new \LogicException('Template not found');
-        }
+	/** @return array<mixed, mixed> */
+	public function getParams(): array
+	{
+		return $this->params;
+	}
 
-        return $this->templatePath;
-    }
+	public function getTemplatePath(): string
+	{
+		if (!\file_exists($this->templatePath)) {
+			throw new \App\Events\Mail\LogicException('Template not found');
+		}
 
-    public function getMessage(): Nette\Mail\Message
-    {
-        return $this->message;
-    }
+		return $this->templatePath;
+	}
+
+	public function getMessage(): Nette\Mail\Message
+	{
+		return $this->message;
+	}
+
 }

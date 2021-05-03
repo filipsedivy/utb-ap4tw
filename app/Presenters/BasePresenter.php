@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Presenters;
 
@@ -8,33 +8,33 @@ use App\Core\Presenter\PageInfo;
 use App\Database\Entity\EntityManager;
 use Nette\Application\UI\Presenter;
 
-/**
- * @property-read PageInfo $pageInfo
-*/
+/** @property-read \App\Core\Presenter\PageInfo $pageInfo */
 abstract class BasePresenter extends Presenter
 {
-    public EntityManager $entityManager;
 
-    private ?PageInfo $pageInfoEntity = null;
+	public EntityManager $entityManager;
 
-    final public function injectEntityManager(EntityManager $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
+	private ?PageInfo $pageInfoEntity = null;
 
-    final public function getPageInfo(): PageInfo
-    {
-        if ($this->pageInfoEntity === null) {
-            $this->pageInfoEntity = new PageInfo();
-        }
+	final public function injectEntityManager(EntityManager $entityManager): void
+	{
+		$this->entityManager = $entityManager;
+	}
 
-        return $this->pageInfoEntity;
-    }
+	final public function getPageInfo(): PageInfo
+	{
+		if ($this->pageInfoEntity === null) {
+			$this->pageInfoEntity = new PageInfo();
+		}
 
-    public function afterRender(): void
-    {
-        parent::afterRender();
+		return $this->pageInfoEntity;
+	}
 
-        $this->template->pageInfo = $this->getPageInfo();
-    }
+	public function afterRender(): void
+	{
+		parent::afterRender();
+
+		$this->template->pageInfo = $this->getPageInfo();
+	}
+
 }

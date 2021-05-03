@@ -1,28 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\Employee;
 
 final class ChangePasswordEvent
 {
-    private int $user;
 
-    private string $password;
+	private int $user;
 
-    public function __construct(int $user, string $password)
-    {
-        $this->user = $user;
-        $this->password = $password;
-    }
+	private string $password;
 
-    public function getUser(): int
-    {
-        return $this->user;
-    }
+	public function __construct(int $user, string $password)
+	{
+		$this->user = $user;
+		$this->password = $password;
+	}
 
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
+	public function getUser(): int
+	{
+		return $this->user;
+	}
+
+	public function getPassword(): string
+	{
+		return $this->password;
+	}
+
 }

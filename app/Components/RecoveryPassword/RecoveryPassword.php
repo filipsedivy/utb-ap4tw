@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\RecoveryPassword;
 
 use App\Bootstrap;
-use App\Database\Entity;
 use App\Core\UI\CoreControl;
+use App\Database\Entity;
 use App\Events\Mail\SendEmailTemplateEvent;
 use Nette\Application\UI\Form;
 use Nette\Mail\Message;
@@ -17,6 +17,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RecoveryPassword extends CoreControl
 {
+
     /** @var array<callable(): void> */
     public array $onSuccess = [];
 
@@ -63,9 +64,11 @@ final class RecoveryPassword extends CoreControl
     {
         $hash = $this->passwords->hash($values->password);
         $user = $this->entityManager->getEmployeeRepository()->find($this->recoveryPassword->user->id);
+
         if (!$user instanceof Entity\Employee) {
             $this->error('User not found');
         }
+
         $user->setPassword($hash);
 
         $this->entityManager->remove($this->recoveryPassword);
@@ -85,4 +88,5 @@ final class RecoveryPassword extends CoreControl
         $this->user->login($this->recoveryPassword->user->username, $values->password);
         Arrays::invoke($this->onSuccess);
     }
+
 }

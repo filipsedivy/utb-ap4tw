@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Repository;
 
@@ -9,17 +9,19 @@ use Doctrine\ORM\EntityRepository;
 
 final class EmployeeRepository extends EntityRepository
 {
-    public function findActiveByUsername(string $username): ?Employee
-    {
-        $entity = $this->findOneBy([
-            'username' => $username,
-            'active' => true
-        ]);
 
-        if ($entity instanceof Employee) {
-            return $entity;
-        }
+	public function findActiveByUsername(string $username): ?Employee
+	{
+		$entity = $this->findOneBy([
+		'username' => $username,
+		'active' => true,
+		]);
 
-        return null;
-    }
+		if ($entity instanceof Employee) {
+			return $entity;
+		}
+
+		return null;
+	}
+
 }

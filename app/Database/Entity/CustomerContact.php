@@ -1,12 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
@@ -14,20 +10,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CustomerContact extends BaseEntity
 {
+
     /**
      * @ORM\ManyToOne(targetEntity="ContactType")
      * @ORM\JoinColumn(name="type_key", referencedColumnName="key")
      */
     private ContactType $type;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $value;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private bool $active;
 
     public function __construct()
@@ -64,4 +57,5 @@ class CustomerContact extends BaseEntity
     {
         $this->active = $active;
     }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\Employee\Grid;
 
@@ -10,15 +10,17 @@ use App\Database\Repository\EmployeeRepository;
 
 final class Grid extends Core\UI\CoreControl
 {
-    private EmployeeRepository $repository;
 
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->repository = $entityManager->getEmployeeRepository();
-    }
+	private EmployeeRepository $repository;
 
-    public function beforeRender(): void
-    {
-        $this->template->employees = $this->repository->findAll();
-    }
+	public function __construct(EntityManager $entityManager)
+	{
+		$this->repository = $entityManager->getEmployeeRepository();
+	}
+
+	public function beforeRender(): void
+	{
+		$this->template->employees = $this->repository->findAll();
+	}
+
 }

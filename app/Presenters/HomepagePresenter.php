@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Presenters;
 
@@ -9,6 +9,7 @@ use App\Database\Entity;
 
 final class HomepagePresenter extends AuthPresenter
 {
+
     /** @inject */
     public UI\Total\TotalFactory $totalFactory;
 
@@ -23,6 +24,8 @@ final class HomepagePresenter extends AuthPresenter
         $control->setTitle('Celkový počet zákazníků');
         $control->setIcon('user');
         $control->setColor();
+
         return $control;
     }
+
 }

@@ -1,10 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\FileSystem;
 
 interface FileSystemFactory
 {
-    public function create(): FileSystem;
+
+	public function create(): FileSystem;
+
 }

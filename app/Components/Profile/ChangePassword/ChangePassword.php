@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\Profile\ChangePassword;
 
@@ -9,81 +9,89 @@ use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
 use App\Database\Repository\EmployeeRepository;
 use App\Events\Employee\ChangePasswordEvent;
-use Doctrine\ORM\EntityNotFoundException;
 use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
 use Nette\Security\User;
 use Nette\Utils\Arrays;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use function assert;
 
 final class ChangePassword extends CoreControl
 {
-    /** @var array<callable(): void> */
-    public array $onPasswordChanged = [];
 
-    private User $user;
+	/**
+	 * @var array<callable(): void>
+	 */
+	public array $onPasswordChanged = [];
 
-    private EmployeeRepository $employeeRepository;
+	private User $user;
 
-    private EventDispatcherInterface $eventDispatcher;
+	private EmployeeRepository $employeeRepository;
 
-    private Passwords $passwords;
+	private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(
-        User $user,
-        EventDispatcherInterface $eventDispatcher,
-        EntityManager $entityManager,
-        Passwords $passwords
-    ) {
-        $this->user = $user;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->employeeRepository = $entityManager->getEmployeeRepository();
-        $this->passwords = $passwords;
-    }
+	private Passwords $passwords;
 
-    public function createComponentChangePassword(): Form
-    {
-        $form = new Form();
+	public function __construct(
+	User $user,
+	EventDispatcherInterface $eventDispatcher,
+	EntityManager $entityManager,
+	Passwords $passwords
+	) {
+	 $this->user = $user;
+	 $this->eventDispatcher = $eventDispatcher;
+	 $this->employeeRepository = $entityManager->getEmployeeRepository();
+	 $this->passwords = $passwords;
+	}
 
-        $form->addPassword('oldPassword', 'Původní heslo')
-            ->setRequired('%label musí být vyplněné');
+	public function createComponentChangePassword(): Form
+	{
+	 $form = new Form;
 
-        $form->addPassword('newPassword', 'Nové heslo')
-            ->setRequired('%label je nutné zadat')
-            ->addRule(Form::MIN_LENGTH, 'Heslo musí být delší než %d znaků', 5)
-            ->addRule(Form::NOT_EQUAL, 'Nové heslo nesmí být stejné jako původní', $form['oldPassword']);
+	 $form->addPassword('oldPassword', 'Původní heslo')
+	  ->setRequired('%label musí být vyplněné');
 
-        $form->addPassword('checkPassword', 'Opakujte nové heslo')
-            ->setOmitted()
-            ->setRequired('%label je nutné zopakovat heslo')
-            ->addRule(Form::EQUAL, 'Vyplněné heslo se neshoduje', $form['newPassword']);
+	 $form->addPassword('newPassword', 'Nové heslo')
+	  ->setRequired('%label je nutné zadat')
+	  ->addRule(Form::MIN_LENGTH, 'Heslo musí být delší než %d znaků', 5)
+	  ->addRule(Form::NOT_EQUAL, 'Nové heslo nesmí být stejné jako původní', $form['oldPassword']);
 
-        $form->addSubmit('process', 'Nastavit heslo');
+	 $form->addPassword('checkPassword', 'Opakujte nové heslo')
+	  ->setOmitted()
+	  ->setRequired('%label je nutné zopakovat heslo')
+	  ->addRule(Form::EQUAL, 'Vyplněné heslo se neshoduje', $form['newPassword']);
 
-        $form->onSuccess[] = [$this, 'onSuccess'];
+	 $form->addSubmit('process', 'Nastavit heslo');
 
-        return $form;
-    }
+	 $form->onSuccess[] = [$this, 'onSuccess'];
 
-    public function onSuccess(Form $form): void
-    {
-        $data = $form->getValues(new FormData());
-        assert($data instanceof FormData);
+	 return $form;
+	}
 
-        $employee = $this->employeeRepository->find($this->user->id);
+	public function onSuccess(Form $form): void
+	{
+	 $data = $form->getValues(new FormData);
+	 assert($data instanceof FormData);
 
-        if (!$employee instanceof Employee) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [$this->user->id]);
-        }
+	 $employee = $this->employeeRepository->find($this->user->id);
 
-        if (!$this->passwords->verify($data->oldPassword, $employee->getPassword())) {
-            $form->addError('Staré heslo se neshoduje.');
-            return;
-        }
+	 if (!$employee instanceof Employee) {
+	  throw \App\Components\Profile\ChangePassword\EntityNotFoundException::fromClassNameAndIdentifier(
+	 Employee::class,
+	 [$this->user->id]
+	  );
+	 }
 
-        $event = new ChangePasswordEvent($this->user->id, $data->newPassword);
-        $this->eventDispatcher->dispatch($event);
+	 if (!$this->passwords->verify($data->oldPassword, $employee->getPassword())) {
+	  $form->addError('Staré heslo se neshoduje.');
 
-        Arrays::invoke($this->onPasswordChanged);
-    }
+	  return;
+	 }
+
+	 $event = new ChangePasswordEvent($this->user->id, $data->newPassword);
+	 $this->eventDispatcher->dispatch($event);
+
+	 Arrays::invoke($this->onPasswordChanged);
+	}
+
 }

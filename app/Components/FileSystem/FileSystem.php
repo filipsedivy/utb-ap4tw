@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\FileSystem;
 
@@ -13,6 +13,7 @@ use Nette\Security\User;
 
 final class FileSystem extends CoreControl
 {
+
     private FileSystemRepository $repository;
 
     private EmployeeRepository $employeeRepository;
@@ -29,15 +30,16 @@ final class FileSystem extends CoreControl
     public function beforeRender(): void
     {
         $employee = $this->employeeRepository->find($this->user->id);
-        assert($employee instanceof Employee);
+        \assert($employee instanceof Employee);
 
         $usageSpace = $this->repository->getUsageByUser($employee);
         $freeSpace = $employee->diskSpace - $usageSpace;
-        $percentage = ($usageSpace / $employee->diskSpace) * 100;
+        $percentage = $usageSpace / $employee->diskSpace * 100;
 
 
         $this->template->disk = [
-            'percentage' => ((int)($percentage * ($p = 10 ** 2))) / $p
+            'percentage' => ((int)($percentage * ($p = 10 ** 2))) / $p,
         ];
     }
+
 }

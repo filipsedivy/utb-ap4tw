@@ -1,92 +1,94 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\Note;
 
 use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
-use Doctrine\ORM\EntityNotFoundException;
+use App\Events\Note\EntityNotFoundException;
 use DateTime;
 use Nette\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use function assert;
 
 final class NoteSubscriber implements EventSubscriberInterface
 {
-    private EntityManager $entityManager;
 
-    private User $user;
+	private EntityManager $entityManager;
 
-    public function __construct(
-        EntityManager $entityManager,
-        User $user
-    ) {
-        $this->entityManager = $entityManager;
-        $this->user = $user;
-    }
+	private User $user;
 
-    /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            AddNoteEvent::class => 'addNote',
-            DeleteNoteEvent::class => 'deleteNote',
-            UpdateNoteEvent::class => 'updateNote'
-        ];
-    }
+	public function __construct(EntityManager $entityManager, User $user) {
+		$this->entityManager = $entityManager;
+		$this->user = $user;
+	}
 
-    public function addNote(AddNoteEvent $event): void
-    {
-        $note = new Note();
-        $note->setNote($event->getNote());
+	/** @return array<string, string> */
+	public static function getSubscribedEvents(): array
+	{
+		return [
+			AddNoteEvent::class => 'addNote',
+			DeleteNoteEvent::class => 'deleteNote',
+			UpdateNoteEvent::class => 'updateNote',
+		];
+	}
 
-        $employee = $event->getEmployee() instanceof Employee ?
-            $event->getEmployee() :
-            $this->entityManager->getEmployeeRepository()->findOneBy(['id' => $this->user->getId()]);
+	public function addNote(AddNoteEvent $event): void
+	{
+		$note = new Note;
+		$note->setNote($event->getNote());
 
-        assert($employee instanceof Employee);
+		$employee = $event->getEmployee() instanceof Employee ?
+			$event->getEmployee() :
+			$this->entityManager->getEmployeeRepository()->findOneBy(['id' => $this->user->getId()]);
 
-        $note->setCreator($employee);
+		\assert($employee instanceof Employee);
 
-        if ($event->getVisibility() !== null) {
-            $note->setPrivate(!$event->getVisibility());
-        }
+		$note->setCreator($employee);
 
-        $this->entityManager->persist($note);
-    }
+		if (null !== $event->getVisibility()) {
+			$note->setPrivate(!$event->getVisibility());
+		}
 
-    public function deleteNote(DeleteNoteEvent $event): void
-    {
-        $note = $this->entityManager->getNoteRepository()->find($event->getId());
+		$this->entityManager->persist($note);
+	}
 
-        if (!$note instanceof Note) {
-            $userId = (string)$event->getId();
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
-        }
+	public function deleteNote(DeleteNoteEvent $event): void
+	{
+		$note = $this->entityManager->getNoteRepository()->find($event->getId());
 
-        $this->entityManager->remove($note);
-    }
+		if (!$note instanceof Note) {
+			$userId = (string)$event->getId();
 
-    public function updateNote(UpdateNoteEvent $event): void
-    {
-        $note = $this->entityManager->getNoteRepository()->find($event->getId());
+			throw \App\Events\Note\EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
+		}
 
-        if (!$note instanceof Note) {
-            $userId = (string)$event->getId();
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
-        }
+		$this->entityManager->remove($note);
+	}
 
-        if ($event->getNote() !== null) {
-            $note->setNote($event->getNote());
-        }
+	public function updateNote(UpdateNoteEvent $event): void
+	{
+		$note = $this->entityManager->getNoteRepository()->find($event->getId());
 
-        $note->setEdited(new DateTime());
+		if (!$note instanceof Note) {
+			$userId = (string)$event->getId();
 
-        if ($event->getVisibility() !== null) {
-            $note->setPrivate(!$event->getVisibility());
-        }
-    }
+			throw \App\Events\Note\EntityNotFoundException::fromClassNameAndIdentifier(Note::class, [$userId]);
+		}
+
+		if (null !== $event->getNote()) {
+			$note->setNote($event->getNote());
+		}
+
+		$note->setEdited(new DateTime);
+
+		if ($event->getVisibility() === null) {
+			return;
+		}
+
+		$note->setPrivate(!$event->getVisibility());
+	}
+
 }

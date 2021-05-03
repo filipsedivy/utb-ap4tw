@@ -1,17 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\Employee;
 
 use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Nette\Security\Passwords;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class EmployeeSubscriber implements EventSubscriberInterface
 {
+
     private EntityManager $entityManager;
 
     private Passwords $passwords;
@@ -22,14 +22,12 @@ final class EmployeeSubscriber implements EventSubscriberInterface
         $this->passwords = $passwords;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getSubscribedEvents(): array
     {
         return [
             ChangePasswordEvent::class => 'changePassword',
-            ChangePersonalDataEvent::class => 'changePersonalData'
+            ChangePersonalDataEvent::class => 'changePersonalData',
         ];
     }
 
@@ -39,7 +37,8 @@ final class EmployeeSubscriber implements EventSubscriberInterface
 
         if (!$employee instanceof Employee) {
             $userId = (string)$event->getUser();
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [$userId]);
+
+            throw \App\Events\Employee\EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [$userId]);
         }
 
         $hashPassword = $this->passwords->hash($event->getPassword());
@@ -52,9 +51,11 @@ final class EmployeeSubscriber implements EventSubscriberInterface
 
         if (!$employee instanceof Employee) {
             $userId = (string)$event->getUser();
+
             throw EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [$userId]);
         }
 
         $employee->setName($event->getName());
     }
+
 }

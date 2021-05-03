@@ -1,76 +1,88 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Core\UI;
 
+use InvalidArgumentException;
 use Nette;
 use ReflectionClass;
+use function dirname;
+use function strrchr;
+use function substr;
 
 abstract class CoreControl extends Nette\Application\UI\Control
 {
-    private bool $isLoaded = false;
 
-    private ?string $extendClassName;
+	private bool $isLoaded = false;
 
-    /**
-     * @param array<mixed> $params
-     * @throws Nette\Application\BadRequestException
-     */
-    public function loadState(array $params): void
-    {
-        if ($this->isLoaded === false) {
-            $this->startup();
-            $this->beforeRender();
+	private ?string $extendClassName;
 
-            $this->isLoaded = true;
-        }
+	/**
+	 * @param array<mixed> $params
+	 * @throws \Nette\Application\BadRequestException
+	 */
+	public function loadState(array $params): void
+	{
+		if (false === $this->isLoaded) {
+			$this->startup();
+			$this->beforeRender();
 
-        parent::loadState($params);
-    }
+			$this->isLoaded = true;
+		}
 
-    public function startup(): void
-    {
-        $reflectionClass = new ReflectionClass(static::class);
+		parent::loadState($params);
+	}
 
-        $this->extendClassName = $this->getControlName();
+	public function startup(): void
+	{
+		$reflectionClass = new ReflectionClass(static::class);
 
-        $reflectionFileName = $reflectionClass->getFileName();
-        if ($reflectionFileName === false) {
-            throw new \InvalidArgumentException();
-        }
+		$this->extendClassName = $this->getControlName();
 
-        $templateDirectory = dirname($reflectionFileName);
-        $templateFile = $this->extendClassName . '.latte';
-        $templatePath = $templateDirectory . '/' . $templateFile;
+		$reflectionFileName = $reflectionClass->getFileName();
 
-        if ($this->template instanceof Nette\Application\UI\Template) {
-            $this->template->setFile($templatePath);
-        }
-    }
+		if ($reflectionFileName === false) {
+			throw new InvalidArgumentException;
+		}
 
-    public function beforeRender(): void
-    {
-    }
+		$templateDirectory = \dirname($reflectionFileName);
+		$templateFile = $this->extendClassName . '.latte';
+		$templatePath = $templateDirectory . '/' . $templateFile;
 
-    public function render(): void
-    {
-        $unique = Nette\Utils\Random::generate(10);
+		if (!($this->template instanceof Nette\Application\UI\Template)) {
+			return;
+		}
 
-        if ($this->template instanceof Nette\Application\UI\Template) {
-            $this->template->unique = $unique;
-            $this->template->componentName = $this->extendClassName . '_' . $unique;
-            $this->template->render();
-        }
-    }
+		$this->template->setFile($templatePath);
+	}
 
-    private function getControlName(): string
-    {
-        $strClass = strrchr(static::class, "\\");
-        if ($strClass === false) {
-            throw new \InvalidArgumentException();
-        }
+	public function beforeRender(): void
+	{
+	}
 
-        return substr($strClass, 1);
-    }
+	public function render(): void
+	{
+		$unique = Nette\Utils\Random::generate(10);
+
+		if (!($this->template instanceof Nette\Application\UI\Template)) {
+			return;
+		}
+
+		$this->template->unique = $unique;
+		$this->template->componentName = $this->extendClassName . '_' . $unique;
+		$this->template->render();
+	}
+
+	private function getControlName(): string
+	{
+		$strClass = \strrchr(static::class, "\\");
+
+		if ($strClass === false) {
+			throw new \InvalidArgumentException;
+		}
+
+		return \substr($strClass, 1);
+	}
+
 }

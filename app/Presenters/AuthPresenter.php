@@ -1,21 +1,21 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Presenters;
 
-use App\Database\Entity\Employee;
-use Doctrine\ORM\EntityNotFoundException;
 use App\Components\Menu\Menu;
 use App\Components\Menu\MenuFactory;
-use Nette\NotImplementedException;
 use App\Core\Presenter;
+use App\Database\Entity\Employee;
+use App\Presenters\EntityNotFoundException;
+use App\Presenters\LogicException;
+use App\Presenters\NotImplementedException;
 
-/**
- * @property-read Employee $authEmployee
- */
+/** @property-read \App\Database\Entity\Employee $authEmployee */
 abstract class AuthPresenter extends BasePresenter
 {
+
     use Presenter\EntityPresenter;
 
     private ?MenuFactory $menuFactoryControl = null;
@@ -27,16 +27,14 @@ abstract class AuthPresenter extends BasePresenter
 
     final public function createComponentMenu(): Menu
     {
-        if ($this->menuFactoryControl === null) {
-            throw new NotImplementedException();
+        if (null === $this->menuFactoryControl) {
+            throw new \App\Presenters\NotImplementedException;
         }
 
         return $this->menuFactoryControl->create();
     }
 
-    /**
-     * @param mixed $element
-     */
+    /** @param mixed $element */
     final public function checkRequirements($element): void
     {
         if (!$this->getUser()->isLoggedIn()) {
@@ -49,15 +47,19 @@ abstract class AuthPresenter extends BasePresenter
     final public function getAuthEmployee(): Employee
     {
         if (!$this->user->loggedIn) {
-            throw new \LogicException('User is not logged');
+            throw new \App\Presenters\LogicException('User is not logged');
         }
 
         $entity = $this->entityManager->getEmployeeRepository()->find($this->user->id);
 
         if (!$entity instanceof Employee) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Employee::class, [(string)$this->user->id]);
+            throw \App\Presenters\EntityNotFoundException::fromClassNameAndIdentifier(
+                Employee::class,
+                [(string)$this->user->id],
+            );
         }
 
         return $entity;
     }
+
 }

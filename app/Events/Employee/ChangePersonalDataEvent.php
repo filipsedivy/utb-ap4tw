@@ -1,28 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\Employee;
 
 final class ChangePersonalDataEvent
 {
-    private int $user;
 
-    private string $name;
+	private int $user;
 
-    public function __construct(int $user, string $name)
-    {
-        $this->user = $user;
-        $this->name = $name;
-    }
+	private string $name;
 
-    public function getUser(): int
-    {
-        return $this->user;
-    }
+	public function __construct(int $user, string $name)
+	{
+		$this->user = $user;
+		$this->name = $name;
+	}
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+	public function getUser(): int
+	{
+		return $this->user;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
+	}
+
 }

@@ -1,13 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils;
 
 /**
@@ -16,58 +15,60 @@ use Nette\Utils;
  */
 class Customer extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="string")
-     */
-    private string $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $archived;
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	private string $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="CustomerContact")
-     * @ORM\JoinTable(name="customer_contacts",
-     *     joinColumns={@ORM\JoinColumn(name="customer_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id")})
-     */
-    private Collection $contacts;
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private bool $archived;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $createdAt;
+	/**
+	 * @ORM\ManyToMany(targetEntity="CustomerContact")
+	 * @ORM\JoinTable(name="customer_contacts",
+	 *     joinColumns={@ORM\JoinColumn(name="customer_id", referencedColumnName="id")},
+	 *     inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id")})
+	 */
+	private Collection $contacts;
 
-    public function __construct()
-    {
-        $this->contacts = new ArrayCollection();
-        $this->archived = false;
-        $this->createdAt = new DateTime();
-    }
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private DateTime $createdAt;
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+	public function __construct()
+	{
+	 $this->contacts = new ArrayCollection;
+	 $this->archived = false;
+	 $this->createdAt = new DateTime;
+	}
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
+	public function getName(): string
+	{
+	 return $this->name;
+	}
 
-    public function isArchived(): bool
-    {
-        return $this->archived;
-    }
+	public function setName(string $name): void
+	{
+	 $this->name = $name;
+	}
 
-    public function setArchived(bool $archived): void
-    {
-        $this->archived = $archived;
-    }
+	public function isArchived(): bool
+	{
+	 return $this->archived;
+	}
 
-    public function getCreatedAt(): Utils\DateTime
-    {
-        return Utils\DateTime::from($this->createdAt);
-    }
+	public function setArchived(bool $archived): void
+	{
+	 $this->archived = $archived;
+	}
+
+	public function getCreatedAt(): Utils\DateTime
+	{
+	 return Utils\DateTime::from($this->createdAt);
+	}
+
 }

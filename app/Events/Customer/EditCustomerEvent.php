@@ -1,36 +1,38 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\Customer;
 
 final class EditCustomerEvent
 {
-    private int $customerId;
 
-    private ?string $name;
+	private int $customerId;
 
-    private ?bool $archive;
+	private ?string $name;
 
-    public function __construct(int $customerId, ?string $name = null, ?bool $archive = null)
-    {
-        $this->customerId = $customerId;
-        $this->name = $name;
-        $this->archive = $archive;
-    }
+	private ?bool $archive;
 
-    public function getCustomerId(): int
-    {
-        return $this->customerId;
-    }
+	public function __construct(int $customerId, ?string $name = null, ?bool $archive = null)
+	{
+		$this->customerId = $customerId;
+		$this->name = $name;
+		$this->archive = $archive;
+	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getCustomerId(): int
+	{
+		return $this->customerId;
+	}
 
-    public function getArchive(): ?bool
-    {
-        return $this->archive;
-    }
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
+
+	public function getArchive(): ?bool
+	{
+		return $this->archive;
+	}
+
 }

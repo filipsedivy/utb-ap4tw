@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Components\ForgotPassword;
 
@@ -15,6 +15,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ForgotPassword extends CoreControl
 {
+
     /** @var array<callable(): void> */
     public array $onSuccess = [];
 
@@ -45,6 +46,7 @@ final class ForgotPassword extends CoreControl
     public function processForm(Form $form, FormData $values): void
     {
         $employee = $this->repository->findOneBy(['username' => $values->username]);
+
         if ($employee instanceof Employee) {
             $event = new SendRecoveryLinkEvent($employee);
             $this->eventDispatcher->dispatch($event);
@@ -52,4 +54,5 @@ final class ForgotPassword extends CoreControl
 
         Arrays::invoke($this->onSuccess);
     }
+
 }

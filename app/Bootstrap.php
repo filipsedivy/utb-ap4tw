@@ -1,39 +1,40 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App;
 
 use App\Core\Configurator;
-use Tracy\Debugger;
 
 class Bootstrap
 {
-    public const MAIL_DIR = __DIR__ . '/Mail';
 
-    public static function boot(): Configurator
-    {
-        $configurator = new Configurator();
-        $appDir = dirname(__DIR__);
+	public const MAIL_DIR = __DIR__ . '/Mail';
 
-        //$configurator->setDebugMode(''); // enable for your remote IP
-        $configurator->enableTracy($appDir . '/log');
+	public static function boot(): Configurator
+	{
+		$configurator = new Configurator;
+		$appDir = \dirname(__DIR__);
 
-        $configurator->setTimeZone('Europe/Prague');
-        $configurator->setTempDirectory($appDir . '/temp');
+		//$configurator->setDebugMode(''); // enable for your remote IP
+		$configurator->enableTracy($appDir . '/log');
 
-        $configurator->createRobotLoader()
-            ->addDirectory(__DIR__)
-            ->register();
+		$configurator->setTimeZone('Europe/Prague');
+		$configurator->setTempDirectory($appDir . '/temp');
 
-        $configurator->addConfig($appDir . '/config/common.neon');
+		$configurator->createRobotLoader()
+			->addDirectory(__DIR__)
+			->register();
 
-        if (getenv('HEROKU_APPLICATION') !== false) {
-            $configurator->addConfig($appDir . '/config/production.neon');
-        } else {
-            $configurator->addConfig($appDir . '/config/local.neon');
-        }
+		$configurator->addConfig($appDir . '/config/common.neon');
 
-        return $configurator;
-    }
+		if (\getenv('HEROKU_APPLICATION') !== false) {
+			$configurator->addConfig($appDir . '/config/production.neon');
+		} else {
+			$configurator->addConfig($appDir . '/config/local.neon');
+		}
+
+		return $configurator;
+	}
+
 }

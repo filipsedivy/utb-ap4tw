@@ -1,28 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Events\RecoveryPassword;
 
 use App\Database\Entity\Employee;
 use Nette;
 
-/**
- * @property-read Employee $employee
- */
+/** @property-read \App\Database\Entity\Employee $employee */
 final class SendRecoveryLinkEvent
 {
-    use Nette\SmartObject;
 
-    private Employee $employee;
+	use Nette\SmartObject;
 
-    public function __construct(Employee $employee)
-    {
-        $this->employee = $employee;
-    }
+	private Employee $employee;
 
-    public function getEmployee(): Employee
-    {
-        return $this->employee;
-    }
+	public function __construct(Employee $employee)
+	{
+		$this->employee = $employee;
+	}
+
+	public function getEmployee(): Employee
+	{
+		return $this->employee;
+	}
+
 }

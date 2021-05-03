@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Database\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\EmployeeRepository")
@@ -18,39 +16,26 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Employee extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="string")
-     */
+
+    /** @ORM\Column(type="string") */
     private string $username;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $password;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $email;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private bool $active;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    /** @ORM\Column(type="string", nullable=true) */
     private ?string $authToken;
 
-    /**
-     * @ORM\Column(type="integer", options={"default": 512000, "unsigned": true})
-    */
+    /** @ORM\Column(type="integer", options={"default": 512000, "unsigned": true}) */
     private int $diskSpace = 512000;
 
     public function __construct()
@@ -127,4 +112,5 @@ class Employee extends BaseEntity
     {
         $this->diskSpace = $diskSpace;
     }
+
 }
