@@ -1,3 +1,5 @@
+{varType App\Core\Presenter\PageInfo $pageInfo}
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -45,7 +47,10 @@
                             <i class="fas fa-fw fa-arrow-circle-left"></i>
                         </a>
                     {/ifset}
-                    {ifset $pageInfo->title}{$pageInfo->title}{/ifset}
+                    {ifset $pageInfo->title}
+                        {$pageInfo->title}
+                        <small n:ifset="$pageInfo->subtitle">{$pageInfo->subtitle}</small>
+                    {/ifset}
                 </h2>
             </div>
 
