@@ -11,14 +11,12 @@ use App\Events\Employee\ChangePersonalDataEvent;
 use Doctrine\ORM\EntityNotFoundException;
 use Nette\Application\UI\Form;
 use Nette\Security\User;
+use Nette\Utils\Arrays;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onUpdate()
- */
 final class ChangePersonalData extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onUpdate = [];
 
     private Employee $employee;
@@ -64,6 +62,6 @@ final class ChangePersonalData extends CoreControl
         $event = new ChangePersonalDataEvent($this->employee->getId(), $data->name);
         $this->eventDispatcher->dispatch($event);
 
-        $this->onUpdate();
+        Arrays::invoke($this->onUpdate);
     }
 }

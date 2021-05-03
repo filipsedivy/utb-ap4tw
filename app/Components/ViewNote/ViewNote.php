@@ -11,14 +11,12 @@ use App\Database\Entity\Note;
 use App\Events\Note\DeleteNoteEvent;
 use Doctrine\ORM\EntityNotFoundException;
 use Nette\Security\User;
+use Nette\Utils\Arrays;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onDelete()
- */
 final class ViewNote extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onDelete = [];
 
     private Note $note;
@@ -53,7 +51,7 @@ final class ViewNote extends CoreControl
 
         try {
             $this->eventDispatcher->dispatch($event);
-            $this->onDelete();
+            Arrays::invoke($this->onDelete);
         } catch (EntityNotFoundException $exception) {
             $this->error('Entity not found');
         }

@@ -12,14 +12,12 @@ use Nette\Application\UI\Form;
 use Nette\Mail\Message;
 use Nette\Security\Passwords;
 use Nette\Security\User;
+use Nette\Utils\Arrays;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onSuccess()
- */
 final class RecoveryPassword extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onSuccess = [];
 
     private Entity\RecoveryPassword $recoveryPassword;
@@ -85,6 +83,6 @@ final class RecoveryPassword extends CoreControl
         $this->eventDispatcher->dispatch($event);
 
         $this->user->login($this->recoveryPassword->user->username, $values->password);
-        $this->onSuccess();
+        Arrays::invoke($this->onSuccess);
     }
 }

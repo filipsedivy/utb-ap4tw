@@ -13,14 +13,12 @@ use Doctrine\ORM\EntityNotFoundException;
 use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
 use Nette\Security\User;
+use Nette\Utils\Arrays;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onPasswordChanged()
- */
 final class ChangePassword extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onPasswordChanged = [];
 
     private User $user;
@@ -86,6 +84,6 @@ final class ChangePassword extends CoreControl
         $event = new ChangePasswordEvent($this->user->id, $data->newPassword);
         $this->eventDispatcher->dispatch($event);
 
-        $this->onPasswordChanged();
+        Arrays::invoke($this->onPasswordChanged);
     }
 }

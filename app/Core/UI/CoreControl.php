@@ -35,11 +35,18 @@ abstract class CoreControl extends Nette\Application\UI\Control
 
         $this->extendClassName = $this->getControlName();
 
-        $templateDirectory = dirname($reflectionClass->getFileName());
+        $reflectionFileName = $reflectionClass->getFileName();
+        if ($reflectionFileName === false) {
+            throw new \InvalidArgumentException();
+        }
+
+        $templateDirectory = dirname($reflectionFileName);
         $templateFile = $this->extendClassName . '.latte';
         $templatePath = $templateDirectory . '/' . $templateFile;
 
-        $this->template->setFile($templatePath);
+        if ($this->template instanceof Nette\Application\UI\Template) {
+            $this->template->setFile($templatePath);
+        }
     }
 
     public function beforeRender(): void
@@ -50,13 +57,20 @@ abstract class CoreControl extends Nette\Application\UI\Control
     {
         $unique = Nette\Utils\Random::generate(10);
 
-        $this->template->unique = $unique;
-        $this->template->componentName = $this->extendClassName . '_' . $unique;
-        $this->template->render();
+        if ($this->template instanceof Nette\Application\UI\Template) {
+            $this->template->unique = $unique;
+            $this->template->componentName = $this->extendClassName . '_' . $unique;
+            $this->template->render();
+        }
     }
 
     private function getControlName(): string
     {
-        return substr(strrchr(static::class, "\\"), 1);
+        $strClass = strrchr(static::class, "\\");
+        if ($strClass === false) {
+            throw new \InvalidArgumentException();
+        }
+
+        return substr($strClass, 1);
     }
 }

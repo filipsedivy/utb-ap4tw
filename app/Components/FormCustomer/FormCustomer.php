@@ -9,29 +9,25 @@ use App\Database\Entity\Customer;
 use App\Database\Entity\EntityManager;
 use App\Events\Customer\AddCustomerEvent;
 use App\Events\Customer\EditCustomerEvent;
+use Doctrine\ORM\EntityNotFoundException;
 use Nette\Application\UI;
 use Nette\Forms\Controls\TextBase;
 use Nette\Http\IResponse;
+use Nette\Utils\Arrays;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onCreate()
- * @method void onEdit()
- * @method void onArchived()
- * @method void onCancelArchived()
- */
 final class FormCustomer extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onCreate = [];
 
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onEdit = [];
 
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onArchived = [];
 
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onCancelArchived = [];
 
     private EventDispatcherInterface $eventDispatcher;
@@ -110,27 +106,42 @@ final class FormCustomer extends CoreControl
     {
         $event = new AddCustomerEvent($values->name);
         $this->eventDispatcher->dispatch($event);
-        $this->onCreate();
+        Arrays::invoke($this->onCreate);
     }
 
     public function editCustomer(UI\Form $form, FormData $values): void
     {
-        $event = new EditCustomerEvent($this->customer->getId(), $values->name);
+        $customer = $this->customer;
+        if (!$customer instanceof Customer) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, []);
+        }
+
+        $event = new EditCustomerEvent($customer->getId(), $values->name);
         $this->eventDispatcher->dispatch($event);
-        $this->onEdit();
+        Arrays::invoke($this->onEdit);
     }
 
     public function handleArchive(): void
     {
-        $event = new EditCustomerEvent($this->customer->getId(), null, true);
+        $customer = $this->customer;
+        if (!$customer instanceof Customer) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, []);
+        }
+
+        $event = new EditCustomerEvent($customer->getId(), null, true);
         $this->eventDispatcher->dispatch($event);
-        $this->onArchived();
+        Arrays::invoke($this->onArchived);
     }
 
     public function handleCancelArchive(): void
     {
-        $event = new EditCustomerEvent($this->customer->getId(), null, false);
+        $customer = $this->customer;
+        if (!$customer instanceof Customer) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, []);
+        }
+
+        $event = new EditCustomerEvent($customer->getId(), null, false);
         $this->eventDispatcher->dispatch($event);
-        $this->onCancelArchived();
+        Arrays::invoke($this->onCancelArchived);
     }
 }

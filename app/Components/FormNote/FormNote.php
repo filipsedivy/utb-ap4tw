@@ -9,19 +9,17 @@ use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
 use App\Events\Note\AddNoteEvent;
 use App\Events\Note\UpdateNoteEvent;
+use Doctrine\ORM\EntityNotFoundException;
 use Nette\Application\UI\Form;
+use Nette\Utils\Arrays;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @method void onCreate()
- * @method void onEdit()
- */
 final class FormNote extends CoreControl
 {
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onCreate = [];
 
-    /** @var callable[] */
+    /** @var array<callable(): void> */
     public array $onEdit = [];
 
     private EventDispatcherInterface $eventDispatcher;
@@ -82,14 +80,18 @@ final class FormNote extends CoreControl
         $event = new AddNoteEvent($values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
-        $this->onCreate();
+        Arrays::invoke($this->onCreate);
     }
 
     public function processUpdate(Form $form, FormData $values): void
     {
+        if (!$this->note instanceof Note) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, []);
+        }
+
         $event = new UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
-        $this->onEdit();
+        Arrays::invoke($this->onEdit);
     }
 }
