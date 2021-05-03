@@ -6,17 +6,18 @@ namespace App\Presenters;
 
 use App\Database\Entity\Employee;
 use Doctrine\ORM\EntityNotFoundException;
-use App\Components\Menu\{
-    Menu,
-    MenuFactory
-};
+use App\Components\Menu\Menu;
+use App\Components\Menu\MenuFactory;
 use Nette\NotImplementedException;
+use App\Core\Presenter;
 
 /**
  * @property-read Employee $authEmployee
  */
 abstract class AuthPresenter extends BasePresenter
 {
+    use Presenter\EntityPresenter;
+
     private ?MenuFactory $menuFactoryControl = null;
 
     final public function injectMenuFactoryControl(MenuFactory $menuFactory): void

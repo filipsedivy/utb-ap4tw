@@ -28,31 +28,29 @@ final class CustomerPresenter extends AuthPresenter
         $this->formCustomerFactory = $formCustomerFactory;
     }
 
-    public function actionDefault(): void
+    public function renderDefault(): void
     {
-        $this->getPageInfo()->title = 'Zákazníci';
+        $this->pageInfo->title = 'Zákazníci';
     }
 
-    public function actionAdd(): void
+    public function renderAdd(): void
     {
         if ($this->id !== null) {
             $this->error();
         }
 
-        $this->getPageInfo()->title = 'Přidat zákazníka';
-        $this->getPageInfo()->backlink = $this->link('Customer:', ['id' => null]);
+        $this->pageInfo->title = 'Přidat zákazníka';
+        $this->pageInfo->backlink = $this->link('Customer:', ['id' => null]);
     }
 
-    public function actionEdit(int $id): void
+    public function renderEdit(int $id): void
     {
-        $entity = $this->entityManager->getCustomerRepository()->find($id);
+        $entity = $this->checkOneById(Customer::class, $id);
+        assert($entity instanceof Customer);
 
-        if (!$entity instanceof Customer) {
-            $this->error('Customer not found');
-        }
-
-        $this->getPageInfo()->title = 'Upravit zákazníka : ' . $entity->getName();
-        $this->getPageInfo()->backlink = $this->link('Customer:', ['id' => null]);
+        $this->pageInfo->title = 'Upravit zákazníka';
+        $this->pageInfo->subtitle = $entity->getName();
+        $this->pageInfo->backlink = $this->link('Customer:', ['id' => null]);
     }
 
     public function createComponentCustomerView(): CustomerView
