@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Components\FormCustomer;
+namespace App\Components\Customer\Form;
 
-use App\Core\UI\CoreControl;
-use App\Database\Entity\Customer;
-use App\Database\Entity\EntityManager;
-use App\Events\Customer\AddCustomerEvent;
-use App\Events\Customer\EditCustomerEvent;
-use Doctrine\ORM\EntityNotFoundException;
+use App\Core;
+use App\Events\Customer;
+use App\Database\Entity;
+use Doctrine\ORM;
+use Nette\Utils;
+use Nette\Http;
+use Nette\Forms;
 use Nette\Application\UI;
-use Nette\Forms\Controls\TextBase;
-use Nette\Http\IResponse;
-use Nette\Utils\Arrays;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher;
 
-final class FormCustomer extends CoreControl
+final class Form extends Core\UI\CoreControl
 {
     /** @var array<callable(): void> */
     public array $onCreate = [];
@@ -30,13 +28,13 @@ final class FormCustomer extends CoreControl
     /** @var array<callable(): void> */
     public array $onCancelArchived = [];
 
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
-    private ?Customer $customer;
+    private ?Entity\Customer $customer;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        EntityManager $entityManager,
+        EventDispatcher\EventDispatcherInterface $eventDispatcher,
+        Entity\EntityManager $entityManager,
         ?int $customerId = null
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -44,7 +42,7 @@ final class FormCustomer extends CoreControl
         if ($customerId !== null) {
             $entity = $entityManager->getCustomerRepository()->find($customerId);
 
-            if (!$entity instanceof Customer) {
+            if (!$entity instanceof Entity\Customer) {
                 $this->error('Customer not found');
             }
 
@@ -56,7 +54,7 @@ final class FormCustomer extends CoreControl
 
     public function beforeRender(): void
     {
-        if ($this->customer instanceof Customer) {
+        if ($this->customer instanceof Entity\Customer) {
             $form = $this['customerForm'];
             assert($form instanceof UI\Form);
 
@@ -66,7 +64,7 @@ final class FormCustomer extends CoreControl
 
             if ($this->customer->isArchived()) {
                 foreach ($form->getControls() as $input) {
-                    if ($input instanceof TextBase) {
+                    if ($input instanceof Forms\Controls\TextBase) {
                         $input->setHtmlAttribute('readonly');
                     }
                 }
@@ -75,7 +73,7 @@ final class FormCustomer extends CoreControl
             }
         }
 
-        $this->template->isEditMode = $this->customer instanceof Customer;
+        $this->template->isEditMode = $this->customer instanceof Entity\Customer;
     }
 
     public function createComponentCustomerForm(): UI\Form
@@ -87,11 +85,11 @@ final class FormCustomer extends CoreControl
 
         $form->onValidate[] = function () {
             if ($this->customer !== null && $this->customer->isArchived()) {
-                $this->error('Note is archived', IResponse::S403_FORBIDDEN);
+                $this->error('Note is archived', Http\IResponse::S403_FORBIDDEN);
             }
         };
 
-        if ($this->customer instanceof Customer) {
+        if ($this->customer instanceof Entity\Customer) {
             $form->addSubmit('process', 'Upravit zákazníka');
             $form->onSuccess[] = [$this, 'editCustomer'];
         } else {
@@ -102,46 +100,46 @@ final class FormCustomer extends CoreControl
         return $form;
     }
 
-    public function addCustomer(UI\Form $form, FormData $values): void
+    public function addCustomer(UI\Form $form, Data $values): void
     {
-        $event = new AddCustomerEvent($values->name);
+        $event = new Customer\AddCustomerEvent($values->name);
         $this->eventDispatcher->dispatch($event);
-        Arrays::invoke($this->onCreate);
+        Utils\Arrays::invoke($this->onCreate);
     }
 
-    public function editCustomer(UI\Form $form, FormData $values): void
+    public function editCustomer(UI\Form $form, Data $values): void
     {
         $customer = $this->customer;
-        if (!$customer instanceof Customer) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, []);
+        if (!$customer instanceof Entity\Customer) {
+            throw ORM\EntityNotFoundException::fromClassNameAndIdentifier(Entity\Customer::class, []);
         }
 
-        $event = new EditCustomerEvent($customer->getId(), $values->name);
+        $event = new Customer\EditCustomerEvent($customer->getId(), $values->name);
         $this->eventDispatcher->dispatch($event);
-        Arrays::invoke($this->onEdit);
+        Utils\Arrays::invoke($this->onEdit);
     }
 
     public function handleArchive(): void
     {
         $customer = $this->customer;
-        if (!$customer instanceof Customer) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, []);
+        if (!$customer instanceof Entity\Customer) {
+            throw ORM\EntityNotFoundException::fromClassNameAndIdentifier(Entity\Customer::class, []);
         }
 
-        $event = new EditCustomerEvent($customer->getId(), null, true);
+        $event = new Customer\EditCustomerEvent($customer->getId(), null, true);
         $this->eventDispatcher->dispatch($event);
-        Arrays::invoke($this->onArchived);
+        Utils\Arrays::invoke($this->onArchived);
     }
 
     public function handleCancelArchive(): void
     {
         $customer = $this->customer;
-        if (!$customer instanceof Customer) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Customer::class, []);
+        if (!$customer instanceof Entity\Customer) {
+            throw ORM\EntityNotFoundException::fromClassNameAndIdentifier(Entity\Customer::class, []);
         }
 
-        $event = new EditCustomerEvent($customer->getId(), null, false);
+        $event = new Customer\EditCustomerEvent($customer->getId(), null, false);
         $this->eventDispatcher->dispatch($event);
-        Arrays::invoke($this->onCancelArchived);
+        Utils\Arrays::invoke($this->onCancelArchived);
     }
 }
