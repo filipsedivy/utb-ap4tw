@@ -1,0 +1,19 @@
+{varType App\Database\Entity\Employee[] $employees}
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Jméno</th>
+        <th>E-mail</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr n:foreach="$employees as $employee">
+        <td>
+            <a href="{plink edit, id: $employee->id}">{$employee->name}</a>
+        </td>
+        <td>{$employee->email}</td>
+    </tr>
+    </tbody>
+</table>

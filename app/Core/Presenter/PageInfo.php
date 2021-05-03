@@ -8,5 +8,7 @@ final class PageInfo
 {
     public string $title;
 
+    public string $subtitle;
+
     public string $backlink;
 }

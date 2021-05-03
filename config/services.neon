@@ -13,6 +13,7 @@ services:
 	- App\Components\CustomerView\CustomerViewFactory
 	- App\Components\FileSystem\FileSystemFactory
 	- App\Components\RecoveryPassword\RecoveryPasswordFactory
+	- App\Components\Employee\Grid\GridFactory
 
 	- App\Events\Note\NoteSubscriber
 	- App\Events\Employee\EmployeeSubscriber
