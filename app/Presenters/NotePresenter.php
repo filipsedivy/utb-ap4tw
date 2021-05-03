@@ -4,36 +4,34 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use App\Components\FormNote\FormNote;
-use App\Components\FormNote\FormNoteFactory;
-use App\Components\ViewNote\ViewNoteFactory;
-use App\Database\Entity\Note;
-use App\Database\Repository\NoteRepository;
+use App\Components\Note;
+use App\Database\Entity;
+use App\Database\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nette\Application\UI\Multiplier;
 use Nette\Http;
 
 final class NotePresenter extends AuthPresenter
 {
-    private ViewNoteFactory $viewNoteFactory;
+    private Note\View\ViewFactory $viewNoteFactory;
 
-    private FormNoteFactory $formNoteFactory;
+    private Note\Form\FormFactory $formNoteFactory;
 
-    private NoteRepository $noteRepository;
+    private Repository\NoteRepository $noteRepository;
 
-    private ?Note $cursor = null;
+    private ?Entity\Note $cursor = null;
 
     public function __construct(
-        ViewNoteFactory $viewNoteFactory,
-        FormNoteFactory $formNoteFactory,
+        Note\View\ViewFactory $viewNoteFactory,
+        Note\Form\FormFactory $formNoteFactory,
         EntityManagerInterface $entityManager
     ) {
         parent::__construct();
         $this->viewNoteFactory = $viewNoteFactory;
         $this->formNoteFactory = $formNoteFactory;
 
-        $repository = $entityManager->getRepository(Note::class);
-        assert($repository instanceof NoteRepository);
+        $repository = $entityManager->getRepository(Entity\Note::class);
+        assert($repository instanceof Repository\NoteRepository);
 
         $this->noteRepository = $repository;
     }
@@ -52,8 +50,8 @@ final class NotePresenter extends AuthPresenter
 
     public function actionEdit(int $id): void
     {
-        $entity = $this->checkOneById(Note::class, $id);
-        assert($entity instanceof Note);
+        $entity = $this->checkOneById(Entity\Note::class, $id);
+        assert($entity instanceof Entity\Note);
 
         if ($entity->getCreator()->id !== $this->authEmployee->id) {
             $this->error('You dont have access to edit', Http\IResponse::S403_FORBIDDEN);
@@ -68,9 +66,9 @@ final class NotePresenter extends AuthPresenter
         $this->getPageInfo()->backlink = $this->link('Note:');
     }
 
-    public function createComponentFormNote(): FormNote
+    public function createComponentFormNote(): Note\Form\Form
     {
-        $note = $this->cursor instanceof Note ? $this->cursor->id : null;
+        $note = $this->cursor instanceof Entity\Note ? $this->cursor->id : null;
         $control = $this->formNoteFactory->create($note);
         $control->onCreate[] = function () {
             $this->entityManager->flush();
@@ -90,8 +88,8 @@ final class NotePresenter extends AuthPresenter
     public function createComponentNote(): Multiplier
     {
         return new Multiplier(function (string $id) {
-            $note = $this->checkOneById(Note::class, (int)$id);
-            assert($note instanceof Note);
+            $note = $this->checkOneById(Entity\Note::class, (int)$id);
+            assert($note instanceof Entity\Note);
 
             $control = $this->viewNoteFactory->create($note);
 
@@ -101,7 +99,7 @@ final class NotePresenter extends AuthPresenter
                 $this->redirect('this');
             };
 
-            $control->onChangeVisibility[] = function (Note $note, bool $visibility) {
+            $control->onChangeVisibility[] = function (Entity\Note $note, bool $visibility) {
                 $this->entityManager->flush();
                 $message = $visibility ? 'veřejná' : 'skrytá';
                 $this->flashMessage(sprintf('Poznámka byla nastavena jako %s.', $message), 'success');

@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Components\FormNote;
+namespace App\Components\Note\Form;
 
-use App\Core\UI\CoreControl;
-use App\Database\Entity\EntityManager;
-use App\Database\Entity\Note;
-use App\Events\Note\AddNoteEvent;
-use App\Events\Note\UpdateNoteEvent;
-use Doctrine\ORM\EntityNotFoundException;
-use Nette\Application\UI\Form;
-use Nette\Utils\Arrays;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use App\Database\Entity;
+use App\Events\Note;
+use App\Core;
+use Doctrine\ORM;
+use Nette\Application\UI;
+use Nette\Utils;
+use Symfony\Component\EventDispatcher;
 
-final class FormNote extends CoreControl
+final class Form extends Core\UI\CoreControl
 {
     /** @var array<callable(): void> */
     public array $onCreate = [];
@@ -22,13 +20,13 @@ final class FormNote extends CoreControl
     /** @var array<callable(): void> */
     public array $onEdit = [];
 
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcher\EventDispatcherInterface $eventDispatcher;
 
-    private ?Note $note;
+    private ?Entity\Note $note;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        EntityManager $entityManager,
+        EventDispatcher\EventDispatcherInterface $eventDispatcher,
+        Entity\EntityManager $entityManager,
         ?int $id = null
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -36,7 +34,7 @@ final class FormNote extends CoreControl
         if ($id) {
             $note = $entityManager->getNoteRepository()->find($id);
 
-            if (!$note instanceof Note) {
+            if (!$note instanceof Entity\Note) {
                 $this->error('Note not found');
             }
 
@@ -48,7 +46,7 @@ final class FormNote extends CoreControl
 
     public function beforeRender(): void
     {
-        if ($this->note instanceof Note) {
+        if ($this->note instanceof Entity\Note) {
             $this['form']->setDefaults([
                 'note' => $this->note->note,
                 'visibility' => $this->note->public
@@ -56,15 +54,15 @@ final class FormNote extends CoreControl
         }
     }
 
-    public function createComponentForm(): Form
+    public function createComponentForm(): UI\Form
     {
-        $form = new Form();
+        $form = new UI\Form();
 
         $form->addTextArea('note');
 
         $form->addCheckbox('visibility', 'Veřejná poznámka');
 
-        if ($this->note instanceof Note) {
+        if ($this->note instanceof Entity\Note) {
             $form->addSubmit('process', 'Upravit poznámku');
             $form->onSuccess[] = [$this, 'processUpdate'];
         } else {
@@ -75,23 +73,23 @@ final class FormNote extends CoreControl
         return $form;
     }
 
-    public function processCreate(Form $form, FormData $values): void
+    public function processCreate(UI\Form $form, Data $values): void
     {
-        $event = new AddNoteEvent($values->note, $values->visibility);
+        $event = new Note\AddNoteEvent($values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
-        Arrays::invoke($this->onCreate);
+        Utils\Arrays::invoke($this->onCreate);
     }
 
-    public function processUpdate(Form $form, FormData $values): void
+    public function processUpdate(UI\Form $form, Data $values): void
     {
-        if (!$this->note instanceof Note) {
-            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, []);
+        if (!$this->note instanceof Entity\Note) {
+            throw ORM\EntityNotFoundException::fromClassNameAndIdentifier(Entity\Note::class, []);
         }
 
-        $event = new UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
+        $event = new Note\UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
-        Arrays::invoke($this->onEdit);
+        Utils\Arrays::invoke($this->onEdit);
     }
 }
