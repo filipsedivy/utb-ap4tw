@@ -104,6 +104,13 @@ final class NotePresenter extends AuthPresenter
                 $this->redirect('this');
             };
 
+            $control->onChangeVisibility[] = function (Note $note, bool $visibility) {
+                $this->entityManager->flush();
+                $message = $visibility ? 'veřejná' : 'skrytá';
+                $this->flashMessage(sprintf('Poznámka byla nastavena jako %s.', $message), 'success');
+                $this->redirect('this');
+            };
+
             return $control;
         });
     }
