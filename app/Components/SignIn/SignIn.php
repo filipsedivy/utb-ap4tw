@@ -29,12 +29,11 @@ final class SignIn extends CoreControl
         $username = $form->addText('username', 'Uživatelské jméno')
             ->setRequired('%label je nutné vyplnit');
         $username->getControlPrototype()
-            ->setAttribute('placeholder', $username->getLabel()->getText());
-
+            ->setAttribute('placeholder', $username->label->getText());
         $password = $form->addPassword('password', 'Heslo')
             ->setRequired('%label je nutné vyplnit');
         $password->getControlPrototype()
-            ->setAttribute('placeholder', $password->getLabel()->getText());
+            ->setAttribute('placeholder', $password->label->getText());
 
         $form->addSubmit('process', 'Přihlásit se');
 

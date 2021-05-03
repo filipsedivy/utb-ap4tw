@@ -14,6 +14,10 @@ final class Total extends Dashboard\UI\BaseControl
 
     public function __construct(string $classObject, EntityManager $entityManager)
     {
+        if (!class_exists($classObject)) {
+            throw new \LogicException('Class not exists');
+        }
+
         $repo = $entityManager->getRepository($classObject);
         assert($repo instanceof EntityRepository);
         $this->repository = $repo;

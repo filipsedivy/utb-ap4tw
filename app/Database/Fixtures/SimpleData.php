@@ -89,7 +89,7 @@ class SimpleData implements FixtureInterface, ContainerAwareInterface
 
             $note = new Note();
             $note->setCreator($employee);
-            $note->setNote($this->faker->paragraphs(3, true));
+            $note->setNote($this->faker->paragraph());
 
             $this->objectManager->persist($note);
         }

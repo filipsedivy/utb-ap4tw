@@ -9,6 +9,7 @@ use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
 use App\Events\Note\AddNoteEvent;
 use App\Events\Note\UpdateNoteEvent;
+use Doctrine\ORM\EntityNotFoundException;
 use Nette\Application\UI\Form;
 use Nette\Utils\Arrays;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -84,6 +85,10 @@ final class FormNote extends CoreControl
 
     public function processUpdate(Form $form, FormData $values): void
     {
+        if (!$this->note instanceof Note) {
+            throw EntityNotFoundException::fromClassNameAndIdentifier(Note::class, []);
+        }
+
         $event = new UpdateNoteEvent($this->note->getId(), $values->note, $values->visibility);
         $this->eventDispatcher->dispatch($event);
 
