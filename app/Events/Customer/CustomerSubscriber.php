@@ -18,9 +18,7 @@ final class CustomerSubscriber implements EventSubscriberInterface
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -48,8 +46,10 @@ final class CustomerSubscriber implements EventSubscriberInterface
             $entity->setName($event->getName());
         }
 
-        if ($event->getArchive() !== null) {
-            $entity->setArchived($event->getArchive());
+        if ($event->getArchive() === null) {
+            return;
         }
+
+        $entity->setArchived($event->getArchive());
     }
 }

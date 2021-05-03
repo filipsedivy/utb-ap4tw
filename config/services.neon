@@ -5,15 +5,16 @@ services:
 	- App\Components\SignIn\SignInFactory
 	- App\Components\Menu\MenuFactory
 	- App\Components\ForgotPassword\ForgotPasswordFactory
-	- App\Components\FormNote\FormNoteFactory
-	- App\Components\ViewNote\ViewNoteFactory
-	- App\Components\FormCustomer\FormCustomerFactory
 	- App\Components\Profile\ChangePassword\ChangePasswordFactory
 	- App\Components\Profile\ChangePersonalData\ChangePersonalDataFactory
-	- App\Components\CustomerView\CustomerViewFactory
 	- App\Components\FileSystem\FileSystemFactory
 	- App\Components\RecoveryPassword\RecoveryPasswordFactory
+
+	- App\Components\Note\View\ViewFactory
+	- App\Components\Note\Form\FormFactory
 	- App\Components\Employee\Grid\GridFactory
+	- App\Components\Customer\View\ViewFactory
+	- App\Components\Customer\Form\FormFactory
 
 	- App\Events\Note\NoteSubscriber
 	- App\Events\Employee\EmployeeSubscriber

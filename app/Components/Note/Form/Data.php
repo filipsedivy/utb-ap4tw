@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Components\FormNote;
+namespace App\Components\Note\Form;
 
-final class FormData
+final class Data
 {
     public string $note;
 

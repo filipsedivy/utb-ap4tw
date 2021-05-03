@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use App\Components\CustomerView\CustomerView;
-use App\Components\CustomerView\CustomerViewFactory;
-use App\Components\FormCustomer\FormCustomer;
-use App\Components\FormCustomer\FormCustomerFactory;
-use App\Database\Entity\Customer;
+use App\Components\Customer;
+use App\Database\Entity;
 
 final class CustomerPresenter extends AuthPresenter
 {
     /** @persistent */
     public ?int $id = null;
 
-    private CustomerViewFactory $customerViewFactory;
+    private Customer\View\ViewFactory $customerViewFactory;
 
-    private FormCustomerFactory $formCustomerFactory;
+    private Customer\Form\FormFactory $formCustomerFactory;
 
     public function __construct(
-        CustomerViewFactory $customerViewFactory,
-        FormCustomerFactory $formCustomerFactory
+        Customer\View\ViewFactory $customerViewFactory,
+        Customer\Form\FormFactory $formCustomerFactory
     ) {
         parent::__construct();
         $this->customerViewFactory = $customerViewFactory;
@@ -45,20 +42,20 @@ final class CustomerPresenter extends AuthPresenter
 
     public function renderEdit(int $id): void
     {
-        $entity = $this->checkOneById(Customer::class, $id);
-        assert($entity instanceof Customer);
+        $entity = $this->checkOneById(Entity\Customer::class, $id);
+        assert($entity instanceof Entity\Customer);
 
         $this->pageInfo->title = 'Upravit zákazníka';
         $this->pageInfo->subtitle = $entity->getName();
         $this->pageInfo->backlink = $this->link('Customer:', ['id' => null]);
     }
 
-    public function createComponentCustomerView(): CustomerView
+    public function createComponentCustomerView(): Customer\View\View
     {
         return $this->customerViewFactory->create();
     }
 
-    public function createComponentFormCustomer(): FormCustomer
+    public function createComponentFormCustomer(): Customer\Form\Form
     {
         $control = $this->formCustomerFactory->create($this->id);
         $control->onCreate[] = function () {

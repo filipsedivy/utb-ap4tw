@@ -10,15 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\NoteRepository")
  * @ORM\Table(name="note")
+ *
  * @property-read string $note
  * @property-read bool $private
  * @property-read bool $public
  */
 class Note extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="text")
-     */
+    /** @ORM\Column(type="text") */
     private string $note;
 
     /**
@@ -27,19 +26,13 @@ class Note extends BaseEntity
      */
     private Employee $creator;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private bool $private;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="datetime") */
     private DateTime $created;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="datetime") */
     private DateTime $edited;
 
     public function __construct()
