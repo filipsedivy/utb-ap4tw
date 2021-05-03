@@ -15,6 +15,7 @@ abstract class CoreControl extends Nette\Application\UI\Control
 
     /**
      * @param array<mixed> $params
+     *
      * @throws Nette\Application\BadRequestException
      */
     public function loadState(array $params): void
@@ -44,9 +45,11 @@ abstract class CoreControl extends Nette\Application\UI\Control
         $templateFile = $this->extendClassName . '.latte';
         $templatePath = $templateDirectory . '/' . $templateFile;
 
-        if ($this->template instanceof Nette\Application\UI\Template) {
-            $this->template->setFile($templatePath);
+        if (!($this->template instanceof Nette\Application\UI\Template)) {
+            return;
         }
+
+        $this->template->setFile($templatePath);
     }
 
     public function beforeRender(): void
@@ -57,11 +60,13 @@ abstract class CoreControl extends Nette\Application\UI\Control
     {
         $unique = Nette\Utils\Random::generate(10);
 
-        if ($this->template instanceof Nette\Application\UI\Template) {
-            $this->template->unique = $unique;
-            $this->template->componentName = $this->extendClassName . '_' . $unique;
-            $this->template->render();
+        if (!($this->template instanceof Nette\Application\UI\Template)) {
+            return;
         }
+
+        $this->template->unique = $unique;
+        $this->template->componentName = $this->extendClassName . '_' . $unique;
+        $this->template->render();
     }
 
     private function getControlName(): string

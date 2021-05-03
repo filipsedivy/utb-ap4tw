@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Database\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\RecoveryPasswordRepository")
  * @ORM\Table(name="recovery_password")
+ *
  * @property-read Employee $user
  * @property-read string $token
  * @property-read Utils\DateTime $createdAt
@@ -23,19 +24,13 @@ class RecoveryPassword extends BaseEntity
      */
     private Employee $user;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $token;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="datetime") */
     private \DateTime $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="datetime") */
     private \DateTime $expiredAt;
 
     public function __construct()

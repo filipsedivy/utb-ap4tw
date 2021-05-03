@@ -10,7 +10,7 @@ use Nette\Application\UI\Presenter;
 
 /**
  * @property-read PageInfo $pageInfo
-*/
+ */
 abstract class BasePresenter extends Presenter
 {
     public EntityManager $entityManager;

@@ -18,9 +18,7 @@ class ContactType
      */
     private string $key;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $display;
 
     public function getKey(): string

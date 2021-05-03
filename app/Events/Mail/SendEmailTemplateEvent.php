@@ -22,9 +22,7 @@ final class SendEmailTemplateEvent
 
     private Nette\Mail\Message $message;
 
-    /**
-     * @param array<mixed, mixed> $params
-     */
+    /** @param array<mixed, mixed> $params */
     public function __construct(Nette\Mail\Message $message, string $templatePath, array $params = [])
     {
         $this->templatePath = $templatePath;
@@ -32,17 +30,13 @@ final class SendEmailTemplateEvent
         $this->message = $message;
     }
 
-    /**
-     * @param mixed $value
-     */
+    /** @param mixed $value */
     public function addParam(string $key, $value): void
     {
         $this->params[$key] = $value;
     }
 
-    /**
-     * @return array<mixed, mixed>
-     */
+    /** @return array<mixed, mixed> */
     public function getParams(): array
     {
         return $this->params;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Database\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,14 +18,10 @@ class CustomerContact extends BaseEntity
      */
     private ContactType $type;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $value;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    /** @ORM\Column(type="boolean") */
     private bool $active;
 
     public function __construct()

@@ -46,12 +46,14 @@ final class Form extends Core\UI\CoreControl
 
     public function beforeRender(): void
     {
-        if ($this->note instanceof Entity\Note) {
-            $this['form']->setDefaults([
-                'note' => $this->note->note,
-                'visibility' => $this->note->public
-            ]);
+        if (!($this->note instanceof Entity\Note)) {
+            return;
         }
+
+        $this['form']->setDefaults([
+            'note' => $this->note->note,
+            'visibility' => $this->note->public
+        ]);
     }
 
     public function createComponentForm(): UI\Form
