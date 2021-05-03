@@ -13,18 +13,10 @@ final class EmployeePresenter extends AuthPresenter
 
     private ?Database\Entity\Employee $cursor = null;
 
-    private Database\Repository\EmployeeRepository $repository;
-
     public function __construct(Employee\Grid\GridFactory $gridFactory)
     {
         parent::__construct();
         $this->gridFactory = $gridFactory;
-    }
-
-    public function startup(): void
-    {
-        parent::startup();
-        $this->repository = $this->entityManager->getEmployeeRepository();
     }
 
     public function renderDefault(): void
