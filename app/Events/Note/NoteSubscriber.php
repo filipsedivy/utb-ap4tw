@@ -7,8 +7,8 @@ namespace App\Events\Note;
 use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
 use App\Database\Entity\Note;
-use Doctrine\ORM\EntityNotFoundException;
 use DateTime;
+use Doctrine\ORM\EntityNotFoundException;
 use Nette\Security\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

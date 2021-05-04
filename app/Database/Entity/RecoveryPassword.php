@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Database\Entity;
 
-use Nette\Utils;
 use Doctrine\ORM\Mapping as ORM;
+use Nette\Utils;
 
 /**
  * @ORM\Entity(repositoryClass="App\Database\Repository\RecoveryPasswordRepository")

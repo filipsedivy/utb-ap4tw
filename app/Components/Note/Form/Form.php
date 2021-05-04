@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Components\Note\Form;
 
+use App\Core;
 use App\Database\Entity;
 use App\Events\Note;
-use App\Core;
 use Doctrine\ORM;
 use Nette\Application\UI;
 use Nette\Utils;

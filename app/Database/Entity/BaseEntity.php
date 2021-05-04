@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Database\Entity;
 
-use Nette;
 use Doctrine\ORM\Mapping as ORM;
+use Nette;
 
 /**
  * @property-read int $id

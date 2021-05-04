@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="utb-ap4tw">
+    <rule ref="PSR12"/>
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
@@ -7,6 +8,7 @@
             <property name="searchAnnotations" type="bool" value="true"/>
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
 
     <rule ref="SlevomatCodingStandard.Functions.StrictCall"/>
 
