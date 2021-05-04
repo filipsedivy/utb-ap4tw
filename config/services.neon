@@ -13,6 +13,7 @@ services:
 	- App\Components\Note\View\ViewFactory
 	- App\Components\Note\Form\FormFactory
 	- App\Components\Employee\Grid\GridFactory
+	- App\Components\Employee\Form\FormFactory
 	- App\Components\Customer\View\ViewFactory
 	- App\Components\Customer\Form\FormFactory
 

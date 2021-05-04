@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Components\RecoveryPassword;
 
 use App\Bootstrap;
-use App\Database\Entity;
 use App\Core\UI\CoreControl;
+use App\Database\Entity;
 use App\Events\Mail\SendEmailTemplateEvent;
 use Nette\Application\UI\Form;
 use Nette\Mail\Message;

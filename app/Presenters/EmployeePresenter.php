@@ -11,12 +11,17 @@ final class EmployeePresenter extends AuthPresenter
 {
     private Employee\Grid\GridFactory $gridFactory;
 
+    private Employee\Form\FormFactory $formFactory;
+
     private ?Database\Entity\Employee $cursor = null;
 
-    public function __construct(Employee\Grid\GridFactory $gridFactory)
-    {
+    public function __construct(
+        Employee\Grid\GridFactory $gridFactory,
+        Employee\Form\FormFactory $formFactory
+    ) {
         parent::__construct();
         $this->gridFactory = $gridFactory;
+        $this->formFactory = $formFactory;
     }
 
     public function renderDefault(): void
@@ -50,5 +55,10 @@ final class EmployeePresenter extends AuthPresenter
     public function createComponentGrid(): Employee\Grid\Grid
     {
         return $this->gridFactory->create();
+    }
+
+    public function createComponentForm(): Employee\Form\Form
+    {
+        return $this->formFactory->create();
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use App\Database\Entity;
 use App\Components;
+use App\Database\Entity;
 
 final class SignPresenter extends BasePresenter
 {

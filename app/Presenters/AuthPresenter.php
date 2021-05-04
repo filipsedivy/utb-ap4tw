@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use App\Database\Entity\Employee;
-use Doctrine\ORM\EntityNotFoundException;
 use App\Components\Menu\Menu;
 use App\Components\Menu\MenuFactory;
-use Nette\NotImplementedException;
 use App\Core\Presenter;
+use App\Database\Entity\Employee;
+use Doctrine\ORM\EntityNotFoundException;
+use Nette\NotImplementedException;
 
 /**
  * @property-read Employee $authEmployee

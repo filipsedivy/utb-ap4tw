@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Components\Customer\Form;
 
 use App\Core;
-use App\Events\Customer;
 use App\Database\Entity;
+use App\Events\Customer;
 use Doctrine\ORM;
-use Nette\Utils;
-use Nette\Http;
-use Nette\Forms;
 use Nette\Application\UI;
+use Nette\Forms;
+use Nette\Http;
+use Nette\Utils;
 use Symfony\Component\EventDispatcher;
 
 final class Form extends Core\UI\CoreControl

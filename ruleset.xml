@@ -2,11 +2,16 @@
 <ruleset name="utb-ap4tw">
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
         <properties>
             <property name="searchAnnotations" type="bool" value="true"/>
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
 
     <rule ref="SlevomatCodingStandard.Functions.StrictCall"/>
 
