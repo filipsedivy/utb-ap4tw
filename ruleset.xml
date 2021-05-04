@@ -1,13 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="utb-ap4tw">
-    <rule ref="PSR12"/>
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
-    <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="N"/>
-            <property name="absoluteLineLimit" value="M"/>
-        </properties>
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
