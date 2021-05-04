@@ -3,6 +3,13 @@
     <rule ref="PSR12"/>
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="N"/>
+            <property name="absoluteLineLimit" value="M"/>
+        </properties>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
         <properties>
             <property name="searchAnnotations" type="bool" value="true"/>
