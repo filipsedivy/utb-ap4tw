@@ -40,6 +40,10 @@ final class EmployeePresenter extends AuthPresenter
         $entity = $this->checkOneById(Database\Entity\Employee::class, $id);
         assert($entity instanceof Database\Entity\Employee);
 
+        if ($entity->id === $this->user->id) {
+            $this->redirect('Profile:');
+        }
+
         $this->cursor = $entity;
     }
 
@@ -59,6 +63,25 @@ final class EmployeePresenter extends AuthPresenter
 
     public function createComponentForm(): Employee\Form\Form
     {
-        return $this->formFactory->create();
+        $control = $this->formFactory->create($this->cursor);
+        $control->onCreate[] = function () {
+            $this->entityManager->flush();
+            $this->flashMessage('Uživatel byl úspěšně vytvořen', 'success');
+            $this->redirect('Employee:');
+        };
+
+        $control->onUpdate[] = function () {
+            $this->entityManager->flush();
+            $this->flashMessage('Uživatel byl úspěšně aktualizován', 'success');
+            $this->redirect('Employee:');
+        };
+
+        $control->onDelete[] = function () {
+            $this->entityManager->flush();
+            $this->flashMessage('Uživatel byl úspěšně odstraněn', 'success');
+            $this->redirect('Employee:');
+        };
+
+        return $control;
     }
 }

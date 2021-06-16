@@ -52,11 +52,13 @@ class SimpleData implements FixtureInterface, ContainerAwareInterface
         for ($i = 0; $i < 10; $i++) {
             $password = $this->passwords->hash(self::SIMPLE_PASSWORD);
 
-            $employee = new Employee();
-            $employee->setEmail($this->faker->freeEmail);
-            $employee->setPassword($password);
-            $employee->setName($this->faker->name);
-            $employee->setUsername($this->faker->userName);
+            $employee = new Employee(
+                $this->faker->userName,
+                $password,
+                $this->faker->freeEmail,
+                $this->faker->name
+            );
+
             $this->objectManager->persist($employee);
         }
 

@@ -25,4 +25,13 @@ final class HomepagePresenter extends AuthPresenter
         $control->setColor();
         return $control;
     }
+
+    public function createComponentTotalNotes(): UI\Total\Total
+    {
+        $control = $this->totalFactory->create(Entity\Note::class);
+        $control->setTitle('Celkový počet poznámek');
+        $control->setIcon('sticky-note');
+        $control->setColor();
+        return $control;
+    }
 }

@@ -40,8 +40,12 @@ class Employee extends BaseEntity
     /** @ORM\Column(type="integer", options={"default": 512000, "unsigned": true}) */
     private int $diskSpace = 512000;
 
-    public function __construct()
+    public function __construct(string $username, string $password, string $email, string $name)
     {
+        $this->username = $username;
+        $this->password = $password;
+        $this->email = $email;
+        $this->name = $name;
         $this->active = true;
     }
 

@@ -24,12 +24,12 @@ class CreateUser implements FixtureInterface, ContainerAwareInterface
     {
         $passwords = $this->container->getByType(Passwords::class);
 
-        $employee = new Employee();
-        $employee->setName('Administrátor');
-        $employee->setActive(true);
-        $employee->setUsername('admin');
-        $employee->setPassword($passwords->hash('admin'));
-        $employee->setEmail('admin@localhost.dev');
+        $employee = new Employee(
+            'admin',
+            $passwords->hash('admin'),
+            'admin@localhost.dev',
+            'Administrátor'
+        );
 
         $manager->persist($employee);
         $manager->flush();

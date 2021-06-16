@@ -22,7 +22,7 @@ class Note extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="employee_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private Employee $creator;
 
