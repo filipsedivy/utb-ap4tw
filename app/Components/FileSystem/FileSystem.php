@@ -6,6 +6,7 @@ namespace App\Components\FileSystem;
 
 use App\Bootstrap;
 use App\Core\UI\CoreControl;
+use App\Database\Entity;
 use App\Database\Entity\Employee;
 use App\Database\Entity\EntityManager;
 use App\Database\Repository\EmployeeRepository;
@@ -13,9 +14,8 @@ use App\Database\Repository\FileSystemRepository;
 use Nette\Application\UI\Form;
 use Nette\Http\FileUpload;
 use Nette\Security\User;
-use Nette\Utils\ArrayHash;
 use Nette\Utils;
-use App\Database\Entity;
+use Nette\Utils\ArrayHash;
 
 final class FileSystem extends CoreControl
 {
@@ -25,7 +25,7 @@ final class FileSystem extends CoreControl
     /** @var array<callable(): void> */
     public array $onDelete = [];
 
-    /** @var array<callable(): void> */
+    /** @var array<callable(Entity\FileSystem $fileSystem): void> */
     public array $onDownload = [];
 
     private FileSystemRepository $repository;
@@ -65,7 +65,7 @@ final class FileSystem extends CoreControl
 
     public function createComponentUpload(): Form
     {
-        $form = new Form;
+        $form = new Form();
 
         $form->addUpload('file', 'Soubor')
             ->addRule(Form::REQUIRED, 'Soubor musí být zvolený')
@@ -98,7 +98,7 @@ final class FileSystem extends CoreControl
         $fileSystem->setSize($file->size);
         $fileSystem->setUser($employee);
         $fileSystem->setPath($path);
-        $fileSystem->setContentType($file->contentType);
+        $fileSystem->setContentType($file->contentType ?? 'application/octet-stream');
 
         $this->entityManager->persist($fileSystem);
 
