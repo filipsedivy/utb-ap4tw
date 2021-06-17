@@ -44,14 +44,14 @@ final class RecoveryPasswordSubscriber implements EventSubscriberInterface
         $expire = Utils\DateTime::from('now')->modify('+5 hours');
 
         $recoveryPassword = new RecoveryPassword();
-        $recoveryPassword->setUser($event->employee);
+        $recoveryPassword->setUser($event->getEmployee());
         $recoveryPassword->setExpiredAt($expire);
         $recoveryPassword->setToken($token);
         $this->entityManager->persist($recoveryPassword);
 
         $message = new Message();
         $message->setSubject('Obnovení hesla do aplikace CRM');
-        $message->addTo($event->employee->email);
+        $message->addTo($event->getEmployee()->email);
 
         $sendEmail = new SendEmailTemplateEvent(
             $message,
