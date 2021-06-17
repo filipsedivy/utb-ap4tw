@@ -1,11 +1,28 @@
+{varType App\Database\Entity\FileSystem[] $files}
+
 <div class="card">
     <div class="card-header">
         {include 'parts/header.latte'}
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col col-auto">
-            </div>
-        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Název souboru</th>
+                <th>Velikost souboru</th>
+                <th>Akce</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr n:foreach="$files as $file">
+                <td><a n:href="Download!, id => $file->id">{$file->getName()}</td>
+                <td>{$file->getSize()|bytes}</td>
+                <td>
+                    <a n:href="Delete!, id => $file->id" class="btn btn-danger">Odstranit</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

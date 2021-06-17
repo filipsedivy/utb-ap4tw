@@ -2,16 +2,24 @@
 
 <div class="row">
     <div class="col">
-        <div class="btn-group" role="group" aria-label="Header of file system">
-            <button type="button" class="btn btn-secondary">
-                <i class="fas fa-upload"></i> Nahrát soubor
-            </button>
-        </div>
+        {if $disk['percentage'] < 100}
+            {form upload}
+                <div class="input-group" aria-label="Header of file system">
+                    {input file, class => 'form-control'}
+                    <div class="input-group-prepend">
+                        {input upload, class => 'btn btn-secondary'}
+                    </div>
+                </div>
+            {/form}
+        {else}
+            <div class="text-danger">Máte plný disk, prosím nejdříve smažte nějaké soubory</div>
+        {/if}
     </div>
 
     <div class="col text-right">
         <div class="progress progress-disk-size">
-            <div class="progress-bar" role="progressbar" style="width: {$disk['percentage']}%;" aria-valuenow="{$disk['percentage']}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" role="progressbar" style="width: {$disk['percentage']|number:2,'.',''|noescape}%;"
+                 aria-valuenow="{$disk['percentage']}" aria-valuemin="0" aria-valuemax="100">
                 {$disk['percentage']}%
             </div>
         </div>

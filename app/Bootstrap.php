@@ -10,6 +10,8 @@ class Bootstrap
 {
     public const MAIL_DIR = __DIR__ . '/Mail';
 
+    public const UPLOAD_DIR = __DIR__ . '/../uploaded';
+
     public static function boot(): Configurator
     {
         $configurator = new Configurator();

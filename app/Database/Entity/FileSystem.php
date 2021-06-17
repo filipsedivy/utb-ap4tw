@@ -19,6 +19,9 @@ use Nette\Utils;
  */
 class FileSystem extends BaseEntity
 {
+    /** @ORM\Column(type="string", length=500) */
+    private string $name;
+
     /** @ORM\Column(type="integer", options={"unsigned": true}) */
     private int $size;
 
@@ -31,7 +34,7 @@ class FileSystem extends BaseEntity
     /**
      * @ORM\ManyToOne(targetEntity="Employee")
      * @ORM\JoinColumn(name="employee_id")
-    */
+     */
     private Employee $user;
 
     /** @ORM\Column(type="datetime") */
@@ -40,6 +43,16 @@ class FileSystem extends BaseEntity
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getSize(): int
